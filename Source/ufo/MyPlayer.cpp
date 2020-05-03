@@ -20,12 +20,11 @@ void AMyPlayer::BeginPlay()
 	Super::BeginPlay();
 }
 
-void AMyPlayer::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
+// void AMyPlayer::Tick(float DeltaTime)
+// {
+// 	Super::Tick(DeltaTime);
+// }
 
-// Called to bind functionality to input
 void AMyPlayer::SetupPlayerInputComponent(UInputComponent *PlayerInputComponent)
 {
 	PlayerInputComponent->BindAxis("Vertical", this, &AMyPlayer::MoveVertical);
@@ -39,13 +38,17 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent *PlayerInputComponent)
 
 void AMyPlayer::MoveVertical(float value)
 {
+	AddActorLocalOffset(value * velocity * GetWorld()->GetDeltaSeconds(), true);
 }
+
 void AMyPlayer::Rotate(float value)
 {
+	AddActorLocalRotation(value * rotationVelocity * GetWorld()->GetDeltaSeconds());
 }
 
 void AMyPlayer::FastBoost()
 {
+	body->SetPhysicsLinearVelocity(GetActorForwardVector() * fastBoostForce, true);
 }
 
 void AMyPlayer::AbductionTimer()

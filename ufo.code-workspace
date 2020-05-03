@@ -10,7 +10,18 @@
 		}
 	],
 	"settings": {
-		"typescript.tsc.autoDetect": "off"
+		"typescript.tsc.autoDetect": "off",
+		"files.associations": {
+			"deque": "cpp",
+			"functional": "cpp",
+			"xutility": "cpp",
+			"optional": "cpp",
+			"system_error": "cpp",
+			"xlocmon": "cpp",
+			"xtr1common": "cpp",
+			"type_traits": "cpp",
+			"tuple": "cpp"
+		}
 	},
 	"extensions": {
 		"recommendations": [

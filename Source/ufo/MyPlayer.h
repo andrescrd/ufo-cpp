@@ -20,27 +20,22 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	FTimerHandle abductionTimerHandle;
 
-FTimerHandle abductionTimerHandle;
+	UPROPERTY(VisibleAnywhere)	class UCameraComponent *camera;	
+	UPROPERTY(VisibleAnywhere) class UStaticMeshComponent *body;
+	UPROPERTY(EditAnywhere) float velocity = 600;
+	UPROPERTY(EditAnywhere)	float rotationVelocity = 45;
+	UPROPERTY(EditAnywhere) float fastBoostForce = 100;
 
-	UPROPERTY(VisibleAnywhere)
-	class UCameraComponent *camera
-
-	UPROPERTY(VisibleAnywhere)
-	class UStaticMeshComponent *body
-
-	UPROPERTY(EditAnywhere)
-	float velocity;
-
-	UPROPERTY(EditAnywhere)
-	float rotationVelocity;
-
-	virtual void Tick(float DeltaTime) override;
+	// virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
 
 	void MoveVertical(float value);
 	void Rotate(float value);
+
 	void FastBoost();
+	
 	void StartAbduction();
 	void StopAbduction();
 	void AbductionTimer();
