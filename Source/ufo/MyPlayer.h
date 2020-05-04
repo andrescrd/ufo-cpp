@@ -25,14 +25,23 @@ public:
 	FTimerHandle stopFastBoostTimerHandle;
 
 	// UPROPERTY(VisibleAnywhere)	class UCameraComponent *camera;
-	UPROPERTY(VisibleAnywhere) class UStaticMeshComponent *body;
-	UPROPERTY(VisibleAnywhere) bool hasFastBoost;
-	UPROPERTY(VisibleAnywhere) bool abductionOn;
+	UPROPERTY(VisibleAnywhere)
+	class UStaticMeshComponent *body;
+	UPROPERTY(VisibleAnywhere)
+	class UCapsuleComponent *abductionZone;
+	UPROPERTY(VisibleAnywhere)
+	bool hasFastBoost;
+	UPROPERTY(VisibleAnywhere)
+	bool abductionOn;
 
-	UPROPERTY(EditAnywhere)	float velocity = 600;
-	UPROPERTY(EditAnywhere)	float rotationVelocity = 80;
-	UPROPERTY(EditAnywhere)	float fastBoostForce = 50;
-	UPROPERTY(EditAnywhere)	float fastBoostDuration = 2.5;
+	UPROPERTY(EditAnywhere)
+	float velocity = 600;
+	UPROPERTY(EditAnywhere)
+	float rotationVelocity = 80;
+	UPROPERTY(EditAnywhere)
+	float fastBoostForce = 50;
+	UPROPERTY(EditAnywhere)
+	float fastBoostDuration = 2.5;
 
 	// virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
@@ -47,4 +56,9 @@ public:
 	void StartAbduction();
 	void StopAbduction();
 	void AbductionTimer();
+
+	UFUNCTION()
+	void OnAbductionZoneBeginOverlap(AActor *me, AActor *other);
+	UFUNCTION()
+	void OnAbductionZoneEndOverlap(AActor *me, AActor *other);
 };
