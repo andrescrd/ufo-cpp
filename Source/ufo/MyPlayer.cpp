@@ -20,7 +20,6 @@ AMyPlayer::AMyPlayer()
 
 	AbductionZone = CreateDefaultSubobject<UCapsuleComponent>("Abduction Zone Collider");
 	AbductionZone->SetCapsuleSize(40, 100);
-	AbductionZone->Deactivate();
 	AbductionZone->SetupAttachment(Body);
 	// camera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	// camera->SetupAttachment(body);
@@ -87,7 +86,6 @@ void AMyPlayer::StopFastBoost()
 void AMyPlayer::StartAbduction()
 {
 	AbductionOn = true;
-	AbductionZone->Activate();
 	// GetWorldTimerManager().SetTimer(abductionTimerHandle, this, &AMyPlayer::AbductionTimer, 0.5, true);
 }
 
@@ -99,13 +97,15 @@ void AMyPlayer::AbductionTimer()
 void AMyPlayer::StopAbduction()
 {
 	AbductionOn = false;
-	AbductionZone->Deactivate();
 	// GetWorldTimerManager().ClearTimer(abductionTimerHandle);
 }
 
 void AMyPlayer::OnAbductionZoneBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)  
 {
-	UE_LOG(LogTemp, Warning, TEXT("overlapped"));
+	if(AbductionOn)
+	{
+			UE_LOG(LogTemp, Warning, TEXT("overlapped"));
+	}
 }
 
 void AMyPlayer::OnAbductionZoneEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) 
