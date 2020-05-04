@@ -19,27 +19,22 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-private:
-	bool canUseFastBoost;
-
 public:
 	FTimerHandle abductionTimerHandle;
 	FTimerHandle fastBoostTimerHandle;
+	FTimerHandle stopFastBoostTimerHandle;
 
 	// UPROPERTY(VisibleAnywhere)	class UCameraComponent *camera;
-	UPROPERTY(VisibleAnywhere)
-	class UStaticMeshComponent *body;
+	UPROPERTY(VisibleAnywhere) class UStaticMeshComponent *body;
+	UPROPERTY(VisibleAnywhere) bool hasFastBoost;
+	UPROPERTY(VisibleAnywhere) bool abductionOn;
 
-	UPROPERTY(EditAnywhere)
-	float velocity = 600;
-	UPROPERTY(EditAnywhere)
-	float rotationVelocity = 45;
-	UPROPERTY(EditAnywhere)
-	float fastBoostVelocity = 800;
-	UPROPERTY(EditAnywhere)
-	float maxDurationFastBoost = 3;
+	UPROPERTY(EditAnywhere)	float velocity = 600;
+	UPROPERTY(EditAnywhere)	float rotationVelocity = 80;
+	UPROPERTY(EditAnywhere)	float fastBoostForce = 50;
+	UPROPERTY(EditAnywhere)	float fastBoostDuration = 2.5;
 
-	virtual void Tick(float DeltaTime) override;
+	// virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
 
 	void MoveVertical(float value);
@@ -47,7 +42,7 @@ public:
 
 	void StartFastBoost();
 	void StopFastBoost();
-	// void FastBoostTimer();
+	void FastBoostTimer();
 
 	void StartAbduction();
 	void StopAbduction();
