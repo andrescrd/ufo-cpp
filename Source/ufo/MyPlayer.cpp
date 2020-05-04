@@ -4,23 +4,24 @@
 #include "Components/StaticMeshComponent.h"
 #include "TimerManager.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/PrimitiveComponent.h"
 
 AMyPlayer::AMyPlayer()
 {
 	// PrimaryActorTick.bCanEverTick = true;
 
-	body = CreateDefaultSubobject<UStaticMeshComponent>("Body");
-	body->SetupAttachment(GetRootComponent());
-	body->SetSimulatePhysics(true);
-	body->SetEnableGravity(false);
-	body->SetLinearDamping(1);
-	body->SetAngularDamping(1);
-	body->SetConstraintMode(EDOFMode::XYPlane);
+	Body = CreateDefaultSubobject<UStaticMeshComponent>("Body");
+	Body->SetupAttachment(GetRootComponent());
+	Body->SetSimulatePhysics(true);
+	Body->SetEnableGravity(false);
+	Body->SetLinearDamping(1);
+	Body->SetAngularDamping(1);
+	Body->SetConstraintMode(EDOFMode::XYPlane);
 
-	abductionZone = CreateDefaultSubobject<UCapsuleComponent>("Abduction Zone Collider");
-	abductionZone->SetCapsuleSize(40, 100);
-	abductionZone->Deactivate();
-	abductionZone->SetupAttachment(body);
+	AbductionZone = CreateDefaultSubobject<UCapsuleComponent>("Abduction Zone Collider");
+	AbductionZone->SetCapsuleSize(40, 100);
+	AbductionZone->Deactivate();
+	AbductionZone->SetupAttachment(Body);
 	// camera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	// camera->SetupAttachment(body);
 }
@@ -28,8 +29,8 @@ AMyPlayer::AMyPlayer()
 void AMyPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-	abductionZone->OnComponentBeginOverlap.AddDynamic(this, &AMyPlayer::OnAbductionZoneBeginOverlap);
-	abductionZone->OnComponentEndOverlap.AddDynamic(this, &AMyPlayer::OnAbductionZoneEndOverlap);
+	AbductionZone->OnComponentBeginOverlap.AddDynamic(this, &AMyPlayer::OnAbductionZoneBeginOverlap);
+	AbductionZone->OnComponentEndOverlap.AddDynamic(this, &AMyPlayer::OnAbductionZoneEndOverlap);
 }
 
 // void AMyPlayer::Tick(float DeltaTime)
@@ -49,44 +50,44 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent *PlayerInputComponent)
 	PlayerInputComponent->BindAction("Abduction", IE_Released, this, &AMyPlayer::StopAbduction);
 }
 
-void AMyPlayer::MoveVertical(float value)
+void AMyPlayer::MoveVertical(float Value)
 {
-	FVector movement = FVector(value * velocity * GetWorld()->GetDeltaSeconds(), 0, 0);
-	AddActorLocalOffset(movement, true);
+	FVector Movement = FVector(Value * Velocity * GetWorld()->GetDeltaSeconds(), 0, 0);
+	AddActorLocalOffset(Movement, true);
 }
 
-void AMyPlayer::Rotate(float value)
+void AMyPlayer::Rotate(float Value)
 {
-	FRotator rotation = FRotator(0, value * rotationVelocity * GetWorld()->GetDeltaSeconds(), 0);
-	AddActorLocalRotation(rotation);
+	FRotator Rotation = FRotator(0, Value * RotationVelocity * GetWorld()->GetDeltaSeconds(), 0);
+	AddActorLocalRotation(Rotation);
 }
 
 void AMyPlayer::StartFastBoost()
 {
-	if (!hasFastBoost)
+	if (!HasFastBoost)
 	{
-		GetWorldTimerManager().SetTimer(fastBoostTimerHandle, this, &AMyPlayer::FastBoostTimer, 0.3, true);
-		GetWorldTimerManager().SetTimer(stopFastBoostTimerHandle, this, &AMyPlayer::StopFastBoost, fastBoostDuration, false);
+		GetWorldTimerManager().SetTimer(FastBoostTimerHandle, this, &AMyPlayer::FastBoostTimer, 0.3, true);
+		GetWorldTimerManager().SetTimer(StopFastBoostTimerHandle, this, &AMyPlayer::StopFastBoost, FastBoostDuration, false);
 	}
 }
 
 void AMyPlayer::FastBoostTimer()
 {
-	hasFastBoost = true;
-	FVector boostVelocity = GetActorRotation().Vector() * velocity * fastBoostForce * GetWorld()->GetDeltaSeconds();
-	body->SetPhysicsLinearVelocity(boostVelocity, true);
+	HasFastBoost = true;
+	FVector BoostVelocity = GetActorRotation().Vector() * Velocity * FastBoostForce * GetWorld()->GetDeltaSeconds();
+	Body->SetPhysicsLinearVelocity(BoostVelocity, true);
 }
 
 void AMyPlayer::StopFastBoost()
 {
-	hasFastBoost = false;
-	GetWorldTimerManager().ClearTimer(fastBoostTimerHandle);
+	HasFastBoost = false;
+	GetWorldTimerManager().ClearTimer(FastBoostTimerHandle);
 }
 
 void AMyPlayer::StartAbduction()
 {
-	abductionOn = true;
-	abductionZone->Activate();
+	AbductionOn = true;
+	AbductionZone->Activate();
 	// GetWorldTimerManager().SetTimer(abductionTimerHandle, this, &AMyPlayer::AbductionTimer, 0.5, true);
 }
 
@@ -97,17 +98,17 @@ void AMyPlayer::AbductionTimer()
 
 void AMyPlayer::StopAbduction()
 {
-	abductionOn = false;
-	abductionZone->Deactivate();
+	AbductionOn = false;
+	AbductionZone->Deactivate();
 	// GetWorldTimerManager().ClearTimer(abductionTimerHandle);
 }
 
-void AMyPlayer::OnAbductionZoneEndOverlap(AActor *me, AActor *other)
+void AMyPlayer::OnAbductionZoneBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)  
 {
-	UE_LOG(LogTemp, Warning, FText("overlapped"));
+	UE_LOG(LogTemp, Warning, TEXT("overlapped"));
 }
 
-void AMyPlayer::OnAbductionZoneEndOverlap(AActor *me, AActor *other)
+void AMyPlayer::OnAbductionZoneEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) 
 {
-	UE_LOG(LogTemp, Warning, FText("overlapped end"));
+	UE_LOG(LogTemp, Warning, TEXT("overlapped end"));
 }
