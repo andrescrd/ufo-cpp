@@ -101,28 +101,39 @@ void AMyPlayer::AbductionTimer()
 
 void AMyPlayer::StartFire()
 {
-	FHitResult hitResult;
-	FVector dest = GetActorLocation() + GetActorRotation().Vector() * shootForce;
+	Fire(10, 1000);
+}
 
-	GetWorld()->LineTraceSingleByChannel(
-		hitResult,
-		GetActorLocation(),
-		dest,
-		ECollisionChannel::ECC_Destructible);
-
-	DrawDebugLine(GetWorld(),
-		GetActorLocation(),
-		dest,
-		FColor::Red, false, 3);
-
-	if (hitResult.GetActor())
+void AMyPlayer::Fire(int fireAmount, float fireRadio)
+{
+	for (int i = 0; i < fireAmount; i++)
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("Damaged: %s"), hitResult.GetActor()->GetName());
-		IDamagable* damagable = Cast<IDamagable>(hitResult.GetActor());
 
-		if (damagable)
+		FHitResult hitResult;
+
+		FVector shootRadio = FVector(FMath::RandRange(-fireRadio, fireRadio), FMath::RandRange(-fireRadio, fireRadio), FMath::RandRange(-fireRadio, fireRadio));
+		FVector dest = GetActorLocation() + GetActorRotation().Vector() * shootForce + shootRadio;
+
+		GetWorld()->LineTraceSingleByChannel(
+			hitResult,
+			GetActorLocation(),
+			dest,
+			ECollisionChannel::ECC_Destructible);
+
+		DrawDebugLine(GetWorld(),
+			GetActorLocation(),
+			dest,
+			FColor::Red, false, 3);
+
+		if (hitResult.GetActor())
 		{
-			damagable->Damage(damage);
+			//UE_LOG(LogTemp, Warning, TEXT("Damaged: %s"), hitResult.GetActor()->GetName());
+			IDamagable* damagable = Cast<IDamagable>(hitResult.GetActor());
+
+			if (damagable)
+			{
+				damagable->Damage(damage);
+			}
 		}
 	}
 }

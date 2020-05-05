@@ -53,6 +53,7 @@ public:
 	void AbductionTimer();
 
 	void StartFire();
+	void Fire(int fireAmount, float fireRadio);
 
 	UFUNCTION()
 	void OnAbductionZoneBeginOverlap(class UPrimitiveComponent* overlappedComp, class AActor* otherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& sweepResult);
