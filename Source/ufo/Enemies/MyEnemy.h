@@ -2,9 +2,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "ufo/Interfaces/Damagable.h"
+#include "ufo/Interfaces/Healthable.h"
 #include "MyEnemy.generated.h"
-#include "ufo\Interfaces\Damagable.h"
-#include "ufo\Interfaces\Healthable.h"
 
 UCLASS()
 class UFO_API AMyEnemy : public ACharacter, public IDamagable, public IHealthable
@@ -26,5 +26,4 @@ public:
 
 	virtual void Damage(float amount);
 	virtual	void Health(float amount);
-
 };

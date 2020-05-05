@@ -18,5 +18,5 @@ class UFO_API IHealthable
 	GENERATED_BODY()
 
 public:
-	virtual void Health(float amount);
+	virtual void Health(float amount) = 0;
 };

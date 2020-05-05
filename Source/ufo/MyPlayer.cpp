@@ -8,6 +8,7 @@
 #include "DrawDebugHelpers.h"
 #include "Interfaces/Damagable.h"
 
+
 AMyPlayer::AMyPlayer()
 {
 	// PrimaryActorTick.bCanEverTick = true;
@@ -39,57 +40,57 @@ void AMyPlayer::BeginPlay()
 
 // }
 
-void AMyPlayer::SetupPlayerInputComponent(UInputComponent *PlayerInputComponent)
+void AMyPlayer::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
 {
-	PlayerInputComponent->BindAxis("Vertical", this, &AMyPlayer::MoveVertical);
-	PlayerInputComponent->BindAxis("Horizontal", this, &AMyPlayer::Rotate);
+	playerInputComponent->BindAxis("Vertical", this, &AMyPlayer::MoveVertical);
+	playerInputComponent->BindAxis("Horizontal", this, &AMyPlayer::Rotate);
 
-	PlayerInputComponent->BindAction("Fast", IE_Pressed, this, &AMyPlayer::StartFastBoost);
+	playerInputComponent->BindAction("Fast", IE_Pressed, this, &AMyPlayer::StartFastBoost);
 	// PlayerInputComponent->BindAction("Fast", IE_Released, this, &AMyPlayer::StopFastBoost);
 
-	PlayerInputComponent->BindAction("Abduction", IE_Pressed, this, &AMyPlayer::StartAbduction);
-	PlayerInputComponent->BindAction("Abduction", IE_Released, this, &AMyPlayer::StopAbduction);
+	playerInputComponent->BindAction("Abduction", IE_Pressed, this, &AMyPlayer::StartAbduction);
+	playerInputComponent->BindAction("Abduction", IE_Released, this, &AMyPlayer::StopAbduction);
 
-	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AMyPlayer::StartFire);
+	playerInputComponent->BindAction("Fire", IE_Pressed, this, &AMyPlayer::StartFire);
 }
 
-void AMyPlayer::MoveVertical(float Value)
+void AMyPlayer::MoveVertical(float value)
 {
-	FVector Movement = FVector(Value * Velocity * GetWorld()->GetDeltaSeconds(), 0, 0);
+	FVector Movement = FVector(value * velocity * GetWorld()->GetDeltaSeconds(), 0, 0);
 	AddActorLocalOffset(Movement, true);
 }
 
-void AMyPlayer::Rotate(float Value)
+void AMyPlayer::Rotate(float value)
 {
-	FRotator Rotation = FRotator(0, Value * RotationVelocity * GetWorld()->GetDeltaSeconds(), 0);
+	FRotator Rotation = FRotator(0, value * rotationVelocity * GetWorld()->GetDeltaSeconds(), 0);
 	AddActorLocalRotation(Rotation);
 }
 
 void AMyPlayer::StartFastBoost()
 {
-	if (!HasFastBoost)
+	if (!hasFastBoost)
 	{
-		GetWorldTimerManager().SetTimer(FastBoostTimerHandle, this, &AMyPlayer::FastBoostTimer, 0.3, true);
-		GetWorldTimerManager().SetTimer(StopFastBoostTimerHandle, this, &AMyPlayer::StopFastBoost, FastBoostDuration, false);
+		GetWorldTimerManager().SetTimer(fastBoostTimerHandle, this, &AMyPlayer::FastBoostTimer, 0.3, true);
+		GetWorldTimerManager().SetTimer(stopFastBoostTimerHandle, this, &AMyPlayer::StopFastBoost, fastBoostDuration, false);
 	}
 }
 
 void AMyPlayer::FastBoostTimer()
 {
-	HasFastBoost = true;
-	FVector BoostVelocity = GetActorRotation().Vector() * Velocity * FastBoostForce * GetWorld()->GetDeltaSeconds();
+	hasFastBoost = true;
+	FVector BoostVelocity = GetActorRotation().Vector() * velocity * fastBoostForce * GetWorld()->GetDeltaSeconds();
 	Body->SetPhysicsLinearVelocity(BoostVelocity, true);
 }
 
 void AMyPlayer::StopFastBoost()
 {
-	HasFastBoost = false;
-	GetWorldTimerManager().ClearTimer(FastBoostTimerHandle);
+	hasFastBoost = false;
+	GetWorldTimerManager().ClearTimer(fastBoostTimerHandle);
 }
 
 void AMyPlayer::StartAbduction()
 {
-	AbductionOn = true;
+	abductionOn = true;
 	// GetWorldTimerManager().SetTimer(abductionTimerHandle, this, &AMyPlayer::AbductionTimer, 0.5, true);
 }
 
@@ -101,17 +102,22 @@ void AMyPlayer::AbductionTimer()
 void AMyPlayer::StartFire()
 {
 	FHitResult hitResult;
+	FVector dest = GetActorLocation() + GetActorRotation().Vector() * shootForce;
+
 	GetWorld()->LineTraceSingleByChannel(
-		hitResult, 
-		GetActorLocation(), 
-		GetActorLocation() * 1000,
+		hitResult,
+		GetActorLocation(),
+		dest,
 		ECollisionChannel::ECC_Destructible);
 
-	DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + 1000, FColor::Red, false, 3);
+	DrawDebugLine(GetWorld(),
+		GetActorLocation(),
+		dest,
+		FColor::Red, false, 3);
 
 	if (hitResult.GetActor())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Damaged: %s"), hitResult.GetActor()->GetName());
+		//UE_LOG(LogTemp, Warning, TEXT("Damaged: %s"), hitResult.GetActor()->GetName());
 		IDamagable* damagable = Cast<IDamagable>(hitResult.GetActor());
 
 		if (damagable)
@@ -123,19 +129,19 @@ void AMyPlayer::StartFire()
 
 void AMyPlayer::StopAbduction()
 {
-	AbductionOn = false;
+	abductionOn = false;
 	// GetWorldTimerManager().ClearTimer(abductionTimerHandle);
 }
 
-void AMyPlayer::OnAbductionZoneBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)  
+void AMyPlayer::OnAbductionZoneBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if(AbductionOn)
+	if (abductionOn)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("overlapped"));
 	}
 }
 
-void AMyPlayer::OnAbductionZoneEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) 
+void AMyPlayer::OnAbductionZoneEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	UE_LOG(LogTemp, Warning, TEXT("overlapped end"));
 }

@@ -20,27 +20,29 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	FTimerHandle AbductionTimerHandle;
-	FTimerHandle FastBoostTimerHandle;
-	FTimerHandle StopFastBoostTimerHandle;
+	FTimerHandle abductionTimerHandle;
+	FTimerHandle fastBoostTimerHandle;
+	FTimerHandle stopFastBoostTimerHandle;
 
 	// UPROPERTY(VisibleAnywhere)	class UCameraComponent *camera;
-	UPROPERTY(VisibleAnywhere)	class UStaticMeshComponent *Body;
-	UPROPERTY(VisibleAnywhere)	class UCapsuleComponent *AbductionZone;
-	UPROPERTY(VisibleAnywhere)	bool HasFastBoost;
-	UPROPERTY(VisibleAnywhere)	bool AbductionOn;
+	UPROPERTY(VisibleAnywhere)	class UStaticMeshComponent* Body;
+	UPROPERTY(VisibleAnywhere)	class UCapsuleComponent* AbductionZone;
+	
+	UPROPERTY(VisibleAnywhere)	bool hasFastBoost;
+	UPROPERTY(VisibleAnywhere)	bool abductionOn;
 
-	UPROPERTY(EditAnywhere)	float Velocity = 600;
-	UPROPERTY(EditAnywhere)	float RotationVelocity = 80;
-	UPROPERTY(EditAnywhere)	float FastBoostForce = 50;
-	UPROPERTY(EditAnywhere)	float FastBoostDuration = 2.5;
+	UPROPERTY(EditAnywhere)	float velocity = 600;
+	UPROPERTY(EditAnywhere)	float rotationVelocity = 80;
+	UPROPERTY(EditAnywhere)	float fastBoostForce = 50;
+	UPROPERTY(EditAnywhere)	float fastBoostDuration = 2.5;
 	UPROPERTY(EditAnywhere) float damage = 10;
+	UPROPERTY(EditAnywhere) float shootForce = 500;
 
 	// virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* playerInputComponent) override;
 
-	void MoveVertical(float Value);
-	void Rotate(float Value);
+	void MoveVertical(float value);
+	void Rotate(float value);
 
 	void StartFastBoost();
 	void StopFastBoost();
@@ -53,8 +55,8 @@ public:
 	void StartFire();
 
 	UFUNCTION()
-	void OnAbductionZoneBeginOverlap(class UPrimitiveComponent *OverlappedComp, class AActor *OtherActor, class UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
+	void OnAbductionZoneBeginOverlap(class UPrimitiveComponent* overlappedComp, class AActor* otherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& sweepResult);
 
 	UFUNCTION()
-	void OnAbductionZoneEndOverlap(class UPrimitiveComponent *OverlappedComp, class AActor *OtherActor, class UPrimitiveComponent *OtherComp, int32 OtherBodyIndex);
+	void OnAbductionZoneEndOverlap(class UPrimitiveComponent* overlappedComp, class AActor* otherActor, class UPrimitiveComponent* otherComp, int32 otherBodyIndex);
 };

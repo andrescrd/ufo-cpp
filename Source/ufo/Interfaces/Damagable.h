@@ -18,5 +18,5 @@ class UFO_API IDamagable
 	GENERATED_BODY()
 
 public:
-	virtual void Damage(float amount);
+	virtual void Damage(float amount) = 0;
 };
