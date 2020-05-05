@@ -2,10 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "Healthable.generated.h"
+#include "Damagable.generated.h"
 
 UINTERFACE(MinimalAPI)
-class UHealthable : public UInterface
+class UDamagable : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -13,10 +13,10 @@ class UHealthable : public UInterface
 /**
  *
  */
-class UFO_API IHealthable
+class UFO_API IDamagable
 {
 	GENERATED_BODY()
 
 public:
-	virtual void Health(float amount);
+	virtual void Damage(float amount);
 };

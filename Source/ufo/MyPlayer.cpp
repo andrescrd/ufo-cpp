@@ -5,6 +5,8 @@
 #include "TimerManager.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/PrimitiveComponent.h"
+#include "DrawDebugHelpers.h"
+#include "Interfaces/Damagable.h"
 
 AMyPlayer::AMyPlayer()
 {
@@ -47,6 +49,8 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent *PlayerInputComponent)
 
 	PlayerInputComponent->BindAction("Abduction", IE_Pressed, this, &AMyPlayer::StartAbduction);
 	PlayerInputComponent->BindAction("Abduction", IE_Released, this, &AMyPlayer::StopAbduction);
+
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AMyPlayer::StartFire);
 }
 
 void AMyPlayer::MoveVertical(float Value)
@@ -94,6 +98,29 @@ void AMyPlayer::AbductionTimer()
 	// GetWorld()->byChanel
 }
 
+void AMyPlayer::StartFire()
+{
+	FHitResult hitResult;
+	GetWorld()->LineTraceSingleByChannel(
+		hitResult, 
+		GetActorLocation(), 
+		GetActorLocation() * 1000,
+		ECollisionChannel::ECC_Destructible);
+
+	DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + 1000, FColor::Red, false, 3);
+
+	if (hitResult.GetActor())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Damaged: %s"), hitResult.GetActor()->GetName());
+		IDamagable* damagable = Cast<IDamagable>(hitResult.GetActor());
+
+		if (damagable)
+		{
+			damagable->Damage(damage);
+		}
+	}
+}
+
 void AMyPlayer::StopAbduction()
 {
 	AbductionOn = false;
@@ -104,7 +131,7 @@ void AMyPlayer::OnAbductionZoneBeginOverlap(UPrimitiveComponent* OverlappedComp,
 {
 	if(AbductionOn)
 	{
-			UE_LOG(LogTemp, Warning, TEXT("overlapped"));
+		UE_LOG(LogTemp, Warning, TEXT("overlapped"));
 	}
 }
 

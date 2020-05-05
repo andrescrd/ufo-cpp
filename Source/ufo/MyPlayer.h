@@ -25,23 +25,16 @@ public:
 	FTimerHandle StopFastBoostTimerHandle;
 
 	// UPROPERTY(VisibleAnywhere)	class UCameraComponent *camera;
-	UPROPERTY(VisibleAnywhere)
-	class UStaticMeshComponent *Body;
-	UPROPERTY(VisibleAnywhere)
-	class UCapsuleComponent *AbductionZone;
-	UPROPERTY(VisibleAnywhere)
-	bool HasFastBoost;
-	UPROPERTY(VisibleAnywhere)
-	bool AbductionOn;
+	UPROPERTY(VisibleAnywhere)	class UStaticMeshComponent *Body;
+	UPROPERTY(VisibleAnywhere)	class UCapsuleComponent *AbductionZone;
+	UPROPERTY(VisibleAnywhere)	bool HasFastBoost;
+	UPROPERTY(VisibleAnywhere)	bool AbductionOn;
 
-	UPROPERTY(EditAnywhere)
-	float Velocity = 600;
-	UPROPERTY(EditAnywhere)
-	float RotationVelocity = 80;
-	UPROPERTY(EditAnywhere)
-	float FastBoostForce = 50;
-	UPROPERTY(EditAnywhere)
-	float FastBoostDuration = 2.5;
+	UPROPERTY(EditAnywhere)	float Velocity = 600;
+	UPROPERTY(EditAnywhere)	float RotationVelocity = 80;
+	UPROPERTY(EditAnywhere)	float FastBoostForce = 50;
+	UPROPERTY(EditAnywhere)	float FastBoostDuration = 2.5;
+	UPROPERTY(EditAnywhere) float damage = 10;
 
 	// virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
@@ -56,6 +49,8 @@ public:
 	void StartAbduction();
 	void StopAbduction();
 	void AbductionTimer();
+
+	void StartFire();
 
 	UFUNCTION()
 	void OnAbductionZoneBeginOverlap(class UPrimitiveComponent *OverlappedComp, class AActor *OtherActor, class UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
