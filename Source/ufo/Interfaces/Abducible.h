@@ -19,6 +19,6 @@ class UFO_API IAbducible
 	GENERATED_BODY()
 
 public:
-	void StartAbducted();
+	void StartAbduction();
 	void AbductedFail();
 };

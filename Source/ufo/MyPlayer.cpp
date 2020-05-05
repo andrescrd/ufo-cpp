@@ -7,7 +7,7 @@
 #include "Components/PrimitiveComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Interfaces/Damagable.h"
-
+#include "Interfaces/Abducible.h"
 
 AMyPlayer::AMyPlayer()
 {
@@ -101,7 +101,7 @@ void AMyPlayer::AbductionTimer()
 
 void AMyPlayer::StartFire()
 {
-	Fire(10, 1000);
+	Fire(10, 500);
 }
 
 void AMyPlayer::Fire(int fireAmount, float fireRadio)
@@ -149,10 +149,34 @@ void AMyPlayer::OnAbductionZoneBeginOverlap(UPrimitiveComponent* OverlappedComp,
 	if (abductionOn)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("overlapped"));
+		IAbducible* abducibleObject = Cast<IAbducible>(OtherActor);
+
+		if (abducibleObject)
+		{
+			abducibleObject->StartAbduction();
+		}
+	}
+	else
+	{
+		IAbducible* abducibleObject = Cast<IAbducible>(OtherActor);
+
+		if (abducibleObject)
+		{
+			abducibleObject->AbductedFail();
+		}
 	}
 }
 
 void AMyPlayer::OnAbductionZoneEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	UE_LOG(LogTemp, Warning, TEXT("overlapped end"));
+	if (abductionOn)
+	{
+		IAbducible* abducibleObject = Cast<IAbducible>(OtherActor);
+
+		if (abducibleObject)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("overlapped end"));
+			abducibleObject->AbductedFail();
+		}
+	}
 }
