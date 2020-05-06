@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "MyPlayer.generated.h"
+#include "Interfaces\Abducible.h"
 
 UCLASS()
 class UFO_API AMyPlayer : public APawn
@@ -14,6 +15,9 @@ class UFO_API AMyPlayer : public APawn
 public:
 	// Sets default values for this pawn's properties
 	AMyPlayer();
+
+private:
+	IAbducible* abductible;
 
 protected:
 	// Called when the game starts or when spawned
@@ -37,8 +41,9 @@ public:
 	UPROPERTY(EditAnywhere)	float fastBoostDuration = 2.5;
 	UPROPERTY(EditAnywhere) float damage = 10;
 	UPROPERTY(EditAnywhere) float shootForce = 500;
+	UPROPERTY(EditAnywhere) float abductionForce = 10;
 
-	// virtual void Tick(float DeltaTime) override;
+	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* playerInputComponent) override;
 
 	void MoveVertical(float value);

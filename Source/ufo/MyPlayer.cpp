@@ -8,10 +8,11 @@
 #include "DrawDebugHelpers.h"
 #include "Interfaces/Damagable.h"
 #include "Interfaces/Abducible.h"
+#include "GameFramework\Character.h"
 
 AMyPlayer::AMyPlayer()
 {
-	// PrimaryActorTick.bCanEverTick = true;
+	//PrimaryActorTick.bCanEverTick = true;
 
 	Body = CreateDefaultSubobject<UStaticMeshComponent>("Body");
 	Body->SetupAttachment(GetRootComponent());
@@ -35,10 +36,10 @@ void AMyPlayer::BeginPlay()
 	AbductionZone->OnComponentEndOverlap.AddDynamic(this, &AMyPlayer::OnAbductionZoneEndOverlap);
 }
 
-// void AMyPlayer::Tick(float DeltaTime)
-// {
+void AMyPlayer::Tick(float DeltaTime)
+{
 
-// }
+}
 
 void AMyPlayer::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
 {
@@ -91,12 +92,60 @@ void AMyPlayer::StopFastBoost()
 void AMyPlayer::StartAbduction()
 {
 	abductionOn = true;
-	// GetWorldTimerManager().SetTimer(abductionTimerHandle, this, &AMyPlayer::AbductionTimer, 0.5, true);
+	GetWorldTimerManager().SetTimer(abductionTimerHandle, this, &AMyPlayer::AbductionTimer, 0.1, true);
 }
 
 void AMyPlayer::AbductionTimer()
 {
-	// GetWorld()->byChanel
+	if (abductionOn)
+	{
+		TArray<AActor*> overlappedActors;
+		AbductionZone->GetOverlappingActors(overlappedActors);
+
+		if (overlappedActors.Num() > 0)
+		{
+			abductible = nullptr;
+
+			for (int i = 0; i < overlappedActors.Num(); i++)
+			{
+				abductible = Cast<IAbducible>(overlappedActors[i]);
+
+				if (abductible)
+				{
+					break;
+				}
+			}
+
+			if (abductible != nullptr)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("overlapped %s"), *abductible->_getUObject()->GetName());
+				abductible->StartAbduction();
+
+				ACharacter* currentActor = Cast<ACharacter>(abductible);
+
+				FVector location = currentActor->GetActorLocation();
+				location.Z += abductionForce * GetWorld()->GetDeltaSeconds();
+				currentActor->SetActorLocation(location, true);
+
+				DrawDebugLine(GetWorld(),
+					GetActorLocation(),
+					location,
+					FColor::Orange, false, 3);
+			}
+		}
+	}
+}
+
+void AMyPlayer::StopAbduction()
+{
+	abductionOn = false;
+	GetWorldTimerManager().ClearTimer(abductionTimerHandle);
+
+	if (abductible)
+	{
+		abductible->AbductedFail();
+		abductible = nullptr;
+	}
 }
 
 void AMyPlayer::StartFire()
@@ -108,7 +157,6 @@ void AMyPlayer::Fire(int fireAmount, float fireRadio)
 {
 	for (int i = 0; i < fireAmount; i++)
 	{
-
 		FHitResult hitResult;
 
 		FVector shootRadio = FVector(FMath::RandRange(-fireRadio, fireRadio), FMath::RandRange(-fireRadio, fireRadio), FMath::RandRange(-fireRadio, fireRadio));
@@ -138,19 +186,13 @@ void AMyPlayer::Fire(int fireAmount, float fireRadio)
 	}
 }
 
-void AMyPlayer::StopAbduction()
-{
-	abductionOn = false;
-	// GetWorldTimerManager().ClearTimer(abductionTimerHandle);
-}
-
 void AMyPlayer::OnAbductionZoneBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (abductionOn)
+	/*if (abductionOn)
 	{
 		IAbducible* abducibleObject = Cast<IAbducible>(OtherActor);
 
-		UE_LOG(LogTemp, Warning, TEXT("overlapped %s"), *abducibleObject->_getUObject()->GetName());
+	UE_LOG(LogTemp, Warning, TEXT("overlapped %s"), *abducibleObject->_getUObject()->GetName());
 
 		if (abducibleObject)
 		{
@@ -165,12 +207,12 @@ void AMyPlayer::OnAbductionZoneBeginOverlap(UPrimitiveComponent* OverlappedComp,
 		{
 			abducibleObject->AbductedFail();
 		}
-	}
+	}*/
 }
 
 void AMyPlayer::OnAbductionZoneEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	if (abductionOn)
+	/*if (abductionOn)
 	{
 		IAbducible* abducibleObject = Cast<IAbducible>(OtherActor);
 
@@ -179,5 +221,5 @@ void AMyPlayer::OnAbductionZoneEndOverlap(UPrimitiveComponent* OverlappedComp, A
 			UE_LOG(LogTemp, Warning, TEXT("overlapped end"));
 			abducibleObject->AbductedFail();
 		}
-	}
+	}*/
 }
