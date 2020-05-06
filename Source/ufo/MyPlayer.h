@@ -16,9 +16,6 @@ public:
 	// Sets default values for this pawn's properties
 	AMyPlayer();
 
-private:
-	IAbducible* abductible;
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -31,7 +28,7 @@ public:
 	// UPROPERTY(VisibleAnywhere)	class UCameraComponent *camera;
 	UPROPERTY(VisibleAnywhere)	class UStaticMeshComponent* Body;
 	UPROPERTY(VisibleAnywhere)	class UCapsuleComponent* AbductionZone;
-	
+
 	UPROPERTY(VisibleAnywhere)	bool hasFastBoost;
 	UPROPERTY(VisibleAnywhere)	bool abductionOn;
 
@@ -41,7 +38,7 @@ public:
 	UPROPERTY(EditAnywhere)	float fastBoostDuration = 2.5;
 	UPROPERTY(EditAnywhere) float damage = 10;
 	UPROPERTY(EditAnywhere) float shootForce = 500;
-	UPROPERTY(EditAnywhere) float abductionForce = 10;
+	UPROPERTY(EditAnywhere) float abductionForce = 2000;
 
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* playerInputComponent) override;
@@ -61,8 +58,8 @@ public:
 	void Fire(int fireAmount, float fireRadio);
 
 	UFUNCTION()
-	void OnAbductionZoneBeginOverlap(class UPrimitiveComponent* overlappedComp, class AActor* otherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& sweepResult);
+		void OnAbductionZoneBeginOverlap(class UPrimitiveComponent* overlappedComp, class AActor* otherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& sweepResult);
 
 	UFUNCTION()
-	void OnAbductionZoneEndOverlap(class UPrimitiveComponent* overlappedComp, class AActor* otherActor, class UPrimitiveComponent* otherComp, int32 otherBodyIndex);
+		void OnAbductionZoneEndOverlap(class UPrimitiveComponent* overlappedComp, class AActor* otherActor, class UPrimitiveComponent* otherComp, int32 otherBodyIndex);
 };

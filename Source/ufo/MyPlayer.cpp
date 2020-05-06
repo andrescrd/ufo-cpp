@@ -104,7 +104,7 @@ void AMyPlayer::AbductionTimer()
 
 		if (overlappedActors.Num() > 0)
 		{
-			abductible = nullptr;
+			IAbducible* abductible = nullptr;
 
 			for (int i = 0; i < overlappedActors.Num(); i++)
 			{
@@ -119,11 +119,10 @@ void AMyPlayer::AbductionTimer()
 			if (abductible != nullptr)
 			{
 				UE_LOG(LogTemp, Warning, TEXT("overlapped %s"), *abductible->_getUObject()->GetName());
-				abductible->StartAbductionMode();
+				abductible->StartAbduction(FVector(0,0,abductionForce));
+				
 				AActor* currentActor = Cast<AActor>(abductible);
-				FVector location = currentActor->GetActorLocation();
-				location.Z += abductionForce * GetWorld()->GetDeltaSeconds();
-				currentActor->SetActorLocation(location, true);
+				FVector location = currentActor->GetActorLocation();		
 
 				DrawDebugLine(GetWorld(),
 					GetActorLocation(),
@@ -138,12 +137,6 @@ void AMyPlayer::StopAbduction()
 {
 	abductionOn = false;
 	GetWorldTimerManager().ClearTimer(abductionTimerHandle);
-
-	if (abductible)
-	{
-		abductible->DisableAbductionMode();
-		abductible = nullptr;
-	}
 }
 
 void AMyPlayer::StartFire()
@@ -186,34 +179,10 @@ void AMyPlayer::Fire(int fireAmount, float fireRadio)
 
 void AMyPlayer::OnAbductionZoneBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	/*if (abductionOn)
-	{
-		IAbducible* abducibleObject = Cast<IAbducible>(OtherActor);
-
-	UE_LOG(LogTemp, Warning, TEXT("overlapped %s"), *abducibleObject->_getUObject()->GetName());
-
-		if (abducibleObject)
-		{
-			abducibleObject->StartAbduction();
-		}
-	}
-	else
-	{
-		IAbducible* abducibleObject = Cast<IAbducible>(OtherActor);
-
-		if (abducibleObject)
-		{
-			abducibleObject->AbductedFail();
-		}
-	}*/
+	
 }
 
 void AMyPlayer::OnAbductionZoneEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	IAbducible* abducibleObject = Cast<IAbducible>(OtherActor);	
-	if (abductible && abducibleObject)
-	{
-		abductible->DisableAbductionMode();
-		abductible = nullptr;
-	}	
+
 }

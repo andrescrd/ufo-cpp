@@ -7,20 +7,7 @@ AMyEnemyObjective::AMyEnemyObjective()
 	//PrimaryActorTick.bCanEverTick = true;
 }
 
-void AMyEnemyObjective::StartAbductionMode()
+void AMyEnemyObjective::StartAbduction(FVector abductionForce)
 {
-	UE_LOG(LogTemp, Warning, TEXT("someone try to abductme"));
-	/*FVector currentLocation = GetActorLocation();
-	currentLocation.Z += 10;
-
-	AddActorLocalOffset(currentLocation, true);*/
-	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
+	GetCharacterMovement()->AddForce(abductionForce);
 }
-
-void AMyEnemyObjective::DisableAbductionMode()
-{
-	UE_LOG(LogTemp, Warning, TEXT("abduction fail"));
-
-	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
-}
-
