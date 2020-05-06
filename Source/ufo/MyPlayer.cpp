@@ -148,8 +148,9 @@ void AMyPlayer::OnAbductionZoneBeginOverlap(UPrimitiveComponent* OverlappedComp,
 {
 	if (abductionOn)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("overlapped"));
 		IAbducible* abducibleObject = Cast<IAbducible>(OtherActor);
+
+		UE_LOG(LogTemp, Warning, TEXT("overlapped %s"), *abducibleObject->_getUObject()->GetName());
 
 		if (abducibleObject)
 		{
