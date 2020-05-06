@@ -21,6 +21,6 @@ public:
 
 	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void StartAbduction();
-	void AbductedFail();
+	void StartAbductionMode();
+	void DisableAbductionMode();
 };

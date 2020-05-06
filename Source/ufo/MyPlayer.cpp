@@ -119,10 +119,8 @@ void AMyPlayer::AbductionTimer()
 			if (abductible != nullptr)
 			{
 				UE_LOG(LogTemp, Warning, TEXT("overlapped %s"), *abductible->_getUObject()->GetName());
-				abductible->StartAbduction();
-
-				ACharacter* currentActor = Cast<ACharacter>(abductible);
-
+				abductible->StartAbductionMode();
+				AActor* currentActor = Cast<AActor>(abductible);
 				FVector location = currentActor->GetActorLocation();
 				location.Z += abductionForce * GetWorld()->GetDeltaSeconds();
 				currentActor->SetActorLocation(location, true);
@@ -143,7 +141,7 @@ void AMyPlayer::StopAbduction()
 
 	if (abductible)
 	{
-		abductible->AbductedFail();
+		abductible->DisableAbductionMode();
 		abductible = nullptr;
 	}
 }
@@ -212,14 +210,10 @@ void AMyPlayer::OnAbductionZoneBeginOverlap(UPrimitiveComponent* OverlappedComp,
 
 void AMyPlayer::OnAbductionZoneEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	/*if (abductionOn)
+	IAbducible* abducibleObject = Cast<IAbducible>(OtherActor);	
+	if (abductible && abducibleObject)
 	{
-		IAbducible* abducibleObject = Cast<IAbducible>(OtherActor);
-
-		if (abducibleObject)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("overlapped end"));
-			abducibleObject->AbductedFail();
-		}
-	}*/
+		abductible->DisableAbductionMode();
+		abductible = nullptr;
+	}	
 }

@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "Interfaces/Abducible.h"
 #include "MyPlayer.generated.h"
-#include "Interfaces\Abducible.h"
 
 UCLASS()
 class UFO_API AMyPlayer : public APawn
