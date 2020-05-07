@@ -4,10 +4,11 @@
 #include "GameFramework/Character.h"
 #include "ufo/Interfaces/Damagable.h"
 #include "ufo/Interfaces/Healthable.h"
+#include "ufo/Interfaces/EnemyAttack.h"
 #include "MyEnemy.generated.h"
 
 UCLASS()
-class UFO_API AMyEnemy : public ACharacter, public IDamagable, public IHealthable
+class UFO_API AMyEnemy : public ACharacter, public IDamagable, public IHealthable, public IEnemyAttack
 {
 	GENERATED_BODY()
 
@@ -20,6 +21,7 @@ protected:
 public:
 	UPROPERTY(EditAnywhere) float life = 100;
 	UPROPERTY(EditAnywhere) float maxLife = 100;
+	UPROPERTY(EditAnywhere) float damage = 5;
 	UPROPERTY(EditAnywhere) TSubclassOf<class AActor> spawnedObject;
 
 	//virtual void Tick(float DeltaTime) override;
@@ -27,6 +29,5 @@ public:
 
 	virtual void Damage(float amount);
 	virtual	void Health(float amount);
-
-	void Attack();
+	virtual	void Attack();;
 };

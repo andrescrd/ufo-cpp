@@ -46,5 +46,6 @@ void AMyEnemy::Health(float amount)
 
 void AMyEnemy::Attack()
 {
+	UE_LOG(LogTemp, Warning, TEXT("I am shooting"));
 }
 
