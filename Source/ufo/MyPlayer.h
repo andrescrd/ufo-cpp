@@ -32,13 +32,13 @@ public:
 	UPROPERTY(VisibleAnywhere)	bool hasFastBoost;
 	UPROPERTY(VisibleAnywhere)	bool abductionOn;
 
-	UPROPERTY(EditAnywhere)	float velocity = 600;
-	UPROPERTY(EditAnywhere)	float rotationVelocity = 80;
-	UPROPERTY(EditAnywhere)	float fastBoostForce = 50;
-	UPROPERTY(EditAnywhere)	float fastBoostDuration = 2.5;
+	UPROPERTY(EditAnywhere)	float velocity = 1000;
+	UPROPERTY(EditAnywhere)	float rotationVelocity = 180;
+	UPROPERTY(EditAnywhere)	float fastBoostForce = 100;
+	UPROPERTY(EditAnywhere)	float fastBoostDuration = 1;
 	UPROPERTY(EditAnywhere) float damage = 10;
 	UPROPERTY(EditAnywhere) float shootForce = 500;
-	UPROPERTY(EditAnywhere) float abductionForce = 500000;
+	UPROPERTY(EditAnywhere) float abductionForce = 800000.0f;
 
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* playerInputComponent) override;
