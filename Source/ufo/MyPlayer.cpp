@@ -119,8 +119,8 @@ void AMyPlayer::AbductionTimer()
 			if (abductible != nullptr)
 			{
 				UE_LOG(LogTemp, Warning, TEXT("overlapped %s"), *abductible->_getUObject()->GetName());
-				abductible->StartAbduction(FVector(0,0,abductionForce));
-				
+				abductible->StartAbduction(FVector(0, 0, abductionForce));
+
 				AActor* currentActor = Cast<AActor>(abductible);
 				FVector location = currentActor->GetActorLocation();		
 

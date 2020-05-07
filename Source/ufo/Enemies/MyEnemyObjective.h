@@ -14,12 +14,11 @@ public:
 	AMyEnemyObjective();
 
 protected:
-	//virtual void BeginPlay() override;
+	virtual void BeginPlay() override;
 
 public:
-	//virtual void Tick(float DeltaTime) override;
+	virtual void Tick(float DeltaTime) override;
 
-	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	void StartAbduction(FVector abductionForce);
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	void StartAbduction(FVector abductionForce) override;
 };

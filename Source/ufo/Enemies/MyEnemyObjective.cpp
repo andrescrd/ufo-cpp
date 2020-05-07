@@ -4,10 +4,31 @@
 
 AMyEnemyObjective::AMyEnemyObjective()
 {
-	//PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = true;
 }
+
+void AMyEnemyObjective::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+
+void AMyEnemyObjective::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+}
+
+
+void AMyEnemyObjective::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+}
+
 
 void AMyEnemyObjective::StartAbduction(FVector abductionForce)
 {
-	GetCharacterMovement()->AddForce(abductionForce);
+	UE_LOG(LogTemp, Warning, TEXT("overlapped"))
+		GetCharacterMovement()->AddForce(abductionForce);
 }
