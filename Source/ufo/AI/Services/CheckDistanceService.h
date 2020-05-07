@@ -7,11 +7,18 @@
 #include "CheckDistanceService.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class UFO_API UCheckDistanceService : public UBTService_BlackboardBase
 {
 	GENERATED_BODY()
-	
+
+public:
+	UPROPERTY(EditAnywhere) float minDistance;
+	UPROPERTY(EditAnywhere) FBlackboardKeySelector playerKeySelector;
+	UPROPERTY(EditAnywhere) FBlackboardKeySelector isInAttackRangeKeySelector;
+
+protected:
+	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 };
