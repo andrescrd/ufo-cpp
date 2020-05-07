@@ -4,11 +4,12 @@
 #include "Components/StaticMeshComponent.h"
 #include "TimerManager.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SphereComponent.h"
 #include "Components/PrimitiveComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Interfaces/Damagable.h"
 #include "Interfaces/Abducible.h"
-#include "GameFramework\Character.h"
+#include "GameFramework/Character.h"
 
 AMyPlayer::AMyPlayer()
 {
@@ -25,15 +26,16 @@ AMyPlayer::AMyPlayer()
 	AbductionZone = CreateDefaultSubobject<UCapsuleComponent>("Abduction Zone Collider");
 	AbductionZone->SetCapsuleSize(40, 100);
 	AbductionZone->SetupAttachment(Body);
-	// camera = CreateDefaultSubobject<UCameraComponent>("Camera");
-	// camera->SetupAttachment(body);
+
+	Abductor = CreateDefaultSubobject<USphereComponent>("Abductor Collider");
+	Abductor->SetSphereRadius(40);
+	Abductor->SetupAttachment(Body);;
 }
 
 void AMyPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-	AbductionZone->OnComponentBeginOverlap.AddDynamic(this, &AMyPlayer::OnAbductionZoneBeginOverlap);
-	AbductionZone->OnComponentEndOverlap.AddDynamic(this, &AMyPlayer::OnAbductionZoneEndOverlap);
+	Abductor->OnComponentBeginOverlap.AddDynamic(this, &AMyPlayer::OnAbductorBeginOverlap);
 }
 
 void AMyPlayer::Tick(float DeltaTime)
@@ -73,6 +75,7 @@ void AMyPlayer::StartFastBoost()
 	{
 		GetWorldTimerManager().SetTimer(fastBoostTimerHandle, this, &AMyPlayer::FastBoostTimer, 0.3, true);
 		GetWorldTimerManager().SetTimer(stopFastBoostTimerHandle, this, &AMyPlayer::StopFastBoost, fastBoostDuration, false);
+		OnStartFastBoost();
 	}
 }
 
@@ -87,12 +90,14 @@ void AMyPlayer::StopFastBoost()
 {
 	hasFastBoost = false;
 	GetWorldTimerManager().ClearTimer(fastBoostTimerHandle);
+	OnStopAbduction();
 }
 
 void AMyPlayer::StartAbduction()
 {
 	abductionOn = true;
 	GetWorldTimerManager().SetTimer(abductionTimerHandle, this, &AMyPlayer::AbductionTimer, 0.1, true);
+	OnStartAbduction();
 }
 
 void AMyPlayer::AbductionTimer()
@@ -118,16 +123,7 @@ void AMyPlayer::AbductionTimer()
 
 			if (abductible != nullptr)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("overlapped %s"), *abductible->_getUObject()->GetName());
-				abductible->StartAbduction(FVector(0, 0, abductionForce));
-
-				AActor* currentActor = Cast<AActor>(abductible);
-				FVector location = currentActor->GetActorLocation();		
-
-				DrawDebugLine(GetWorld(),
-					GetActorLocation(),
-					location,
-					FColor::Orange, false, 3);
+				abductible->StartAbduction(FVector(0, 0, abductionForce * abductionMulitply));
 			}
 		}
 	}
@@ -137,11 +133,13 @@ void AMyPlayer::StopAbduction()
 {
 	abductionOn = false;
 	GetWorldTimerManager().ClearTimer(abductionTimerHandle);
+	OnStopAbduction();
 }
 
 void AMyPlayer::StartFire()
 {
 	Fire(10, 500);
+	OnFire();
 }
 
 void AMyPlayer::Fire(int fireAmount, float fireRadio)
@@ -166,7 +164,6 @@ void AMyPlayer::Fire(int fireAmount, float fireRadio)
 
 		if (hitResult.GetActor())
 		{
-			//UE_LOG(LogTemp, Warning, TEXT("Damaged: %s"), hitResult.GetActor()->GetName());
 			IDamagable* damagable = Cast<IDamagable>(hitResult.GetActor());
 
 			if (damagable)
@@ -177,12 +174,13 @@ void AMyPlayer::Fire(int fireAmount, float fireRadio)
 	}
 }
 
-void AMyPlayer::OnAbductionZoneBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void AMyPlayer::OnAbductorBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	
-}
+	IAbducible* actorAbducible = Cast<IAbducible>(OtherActor);
 
-void AMyPlayer::OnAbductionZoneEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-
+	if (actorAbducible)
+	{
+		actorAbducible->SuccessAbduction();
+		abductionCounter++;
+	}
 }

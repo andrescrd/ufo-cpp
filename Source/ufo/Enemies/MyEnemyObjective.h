@@ -21,4 +21,5 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	void StartAbduction(FVector abductionForce) override;
+	void SuccessAbduction() override;
 };

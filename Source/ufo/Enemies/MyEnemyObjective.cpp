@@ -32,3 +32,8 @@ void AMyEnemyObjective::StartAbduction(FVector abductionForce)
 	UE_LOG(LogTemp, Warning, TEXT("overlapped"))
 		GetCharacterMovement()->AddForce(abductionForce);
 }
+
+void AMyEnemyObjective::SuccessAbduction()
+{
+	Destroy();
+}

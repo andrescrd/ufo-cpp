@@ -20,5 +20,6 @@ class UFO_API IAbducible
 
 public:
 	virtual void StartAbduction(FVector abductionForce) = 0;
+	virtual void SuccessAbduction() = 0;
 	//virtual void DisableAbductionMode() = 0;
 };
