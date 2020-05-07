@@ -20,10 +20,13 @@ protected:
 public:
 	UPROPERTY(EditAnywhere) float life = 100;
 	UPROPERTY(EditAnywhere) float maxLife = 100;
+	UPROPERTY(EditAnywhere) TSubclassOf<class AActor> spawnedObject;
 
 	//virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	virtual void Damage(float amount);
 	virtual	void Health(float amount);
+
+	void Attack();
 };

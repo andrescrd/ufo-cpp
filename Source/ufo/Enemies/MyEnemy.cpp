@@ -44,3 +44,7 @@ void AMyEnemy::Health(float amount)
 	}
 }
 
+void AMyEnemy::Attack()
+{
+}
+
