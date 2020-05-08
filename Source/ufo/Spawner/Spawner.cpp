@@ -22,7 +22,7 @@ void ASpawner::SpawnerTimer()
 		float x = FMath::RandRange(-radio, radio);
 		float y = FMath::RandRange(-radio, radio);
 
-		FVector location = FVector::FVector(x, y, GetActorLocation().Z);
+		FVector location = FVector::FVector(GetActorLocation().X + x, GetActorLocation().Y + y, GetActorLocation().Z);
 		GetWorld()->SpawnActor<AActor>(actorToSpawn, location, FRotator(0, 0, 0));
 
 		enemyCounter++;
@@ -43,5 +43,5 @@ void ASpawner::StopSpawner()
 
 void ASpawner::IncrementVelocityOfSpawn()
 {
-	timeToSpawn = timeToSpawn / 2;
+	timeToSpawn = timeToSpawn / factorOfIncrement;
 }

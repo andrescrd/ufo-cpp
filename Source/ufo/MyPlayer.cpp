@@ -49,7 +49,6 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
 	playerInputComponent->BindAxis("Horizontal", this, &AMyPlayer::Rotate);
 
 	playerInputComponent->BindAction("Fast", IE_Pressed, this, &AMyPlayer::StartFastBoost);
-	// PlayerInputComponent->BindAction("Fast", IE_Released, this, &AMyPlayer::StopFastBoost);
 
 	playerInputComponent->BindAction("Abduction", IE_Pressed, this, &AMyPlayer::StartAbduction);
 	playerInputComponent->BindAction("Abduction", IE_Released, this, &AMyPlayer::StopAbduction);

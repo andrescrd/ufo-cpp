@@ -17,11 +17,9 @@ void AMyEnemy::BeginPlay()
 //
 //}
 
-// Called to bind functionality to input
 void AMyEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
 void AMyEnemy::Damage(float amount)

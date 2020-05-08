@@ -31,6 +31,7 @@ public:
 	UPROPERTY(EditAnywhere) float timeToIncrementSpawnVelocity = 10;
 	UPROPERTY(EditAnywhere) int maxEnemySpawned = 10;
 	UPROPERTY(EditAnywhere) float radio = 500;
+	UPROPERTY(EditAnywhere) float factorOfIncrement = 2;
 
 
 	UPROPERTY(EditAnywhere) TSubclassOf<class AActor> actorToSpawn;	

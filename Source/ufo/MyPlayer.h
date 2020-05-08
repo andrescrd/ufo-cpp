@@ -28,7 +28,6 @@ public:
 	FTimerHandle fastBoostTimerHandle;
 	FTimerHandle stopFastBoostTimerHandle;
 
-	// UPROPERTY(VisibleAnywhere)	class UCameraComponent *camera;
 	UPROPERTY(VisibleAnywhere)	class UStaticMeshComponent* Body;
 	UPROPERTY(VisibleAnywhere)	class UCapsuleComponent* AbductionZone;
 	UPROPERTY(VisibleAnywhere)	class USphereComponent* Abductor;
@@ -64,9 +63,6 @@ public:
 
 	UFUNCTION()
 		void OnAbductorBeginOverlap(class UPrimitiveComponent* overlappedComp, class AActor* otherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& sweepResult);
-
-	//UFUNCTION()
-	//	void OnAbductionZoneEndOverlap(class UPrimitiveComponent* overlappedComp, class AActor* otherActor, class UPrimitiveComponent* otherComp, int32 otherBodyIndex);
 
 	UFUNCTION(BlueprintImplementableEvent)
 		void OnStartFastBoost();
