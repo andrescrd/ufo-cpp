@@ -14,19 +14,26 @@ AAIEnemyController::AAIEnemyController()
 	sightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>("Sight Config");
 
 	sightConfig->DetectionByAffiliation.bDetectEnemies = true;
+	sightConfig->DetectionByAffiliation.bDetectFriendlies = true;
+	sightConfig->DetectionByAffiliation.bDetectNeutrals = true;
 
 	aiPerception->ConfigureSense(*sightConfig);
+
+	//aiPerception->OnPerceptionUpdated.AddDynamic(this, &AAIEnemyController::ActorsPerceptionUpdated);
 }
 
 void AAIEnemyController::OnPossess(APawn* pawn)
 {
-	UBlackboardData* currentBB = behaviorComp->BlackboardAsset;
-	UseBlackboard(currentBB, Blackboard);
-	RunBehaviorTree(behaviorComp);
+	Super::OnPossess(pawn);
+	//UBlackboardData* currentBB = behaviorComp->BlackboardAsset;
+	//UseBlackboard(currentBB, Blackboard);
+	//RunBehaviorTree(behaviorComp);
 }
 
 void AAIEnemyController::ActorsPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
 {
+	UE_LOG(LogTemp, Warning, TEXT("ActorsPerceptionUpdated ActorsPerceptionUpdated"));
+
 	for (AActor* actor : UpdatedActors)
 	{
 		IFighter* actorFighter = Cast<IFighter>(actor);
