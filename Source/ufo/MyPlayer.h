@@ -5,10 +5,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Interfaces/Abducible.h"
+#include "Interfaces/Fighter.h"
 #include "MyPlayer.generated.h"
 
 UCLASS()
-class UFO_API AMyPlayer : public APawn
+class UFO_API AMyPlayer : public APawn, public IFighter
 {
 	GENERATED_BODY()
 

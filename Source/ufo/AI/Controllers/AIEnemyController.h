@@ -2,27 +2,30 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
-#include "Perception/AISenseConfig_Sight.h"
 #include "AIEnemyController.generated.h"
 /**
- * 
+ *
  */
 UCLASS()
 class UFO_API AAIEnemyController : public AAIController
 {
 	GENERATED_BODY()
 
-protected:
-	virtual void BeginPlay();
+public:
+	AAIEnemyController();
 
 private:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UAISenseConfig_Sight* sightConfig;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)	UAIPerceptionComponent* aiPerception;
+	class UAIPerceptionComponent* aiPerception;
+	class UAISenseConfig_Sight* sightConfig;
 
-	//UPROPERTY(EditAnywhere)	AActor* actorToAttack;
-	//UPROPERTY(EditAnywhere) FName playerKeySelector;
+	//UPROPERTY(EditAnywhere) class UB* blackboardComp;
+	UPROPERTY(EditAnywhere) class UBehaviorTree* behaviorComp;
+	//UPROPERTY(EditAnywhere)	TSubclassOf<class AActor*> actorToAttack;
+	UPROPERTY(EditAnywhere) FName playerKeySelector;
 
+public:
+	virtual void OnPossess(APawn* InPawn) override;
 
-	UFUNCTION()
+	//UFUNCTION()
 	virtual void ActorsPerceptionUpdated(const TArray<AActor*>& UpdatedActors);
 };
