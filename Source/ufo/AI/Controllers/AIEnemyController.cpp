@@ -19,15 +19,16 @@ AAIEnemyController::AAIEnemyController()
 
 	aiPerception->ConfigureSense(*sightConfig);
 
-	//aiPerception->OnPerceptionUpdated.AddDynamic(this, &AAIEnemyController::ActorsPerceptionUpdated);
+	aiPerception->OnPerceptionUpdated.AddDynamic(this, &AAIEnemyController::ActorsPerceptionUpdated);
 }
 
 void AAIEnemyController::OnPossess(APawn* pawn)
 {
 	Super::OnPossess(pawn);
-	//UBlackboardData* currentBB = behaviorComp->BlackboardAsset;
-	//UseBlackboard(currentBB, Blackboard);
-	//RunBehaviorTree(behaviorComp);
+	
+	UBlackboardData* currentBB = behaviorComp->BlackboardAsset;
+	UseBlackboard(currentBB, Blackboard);
+	RunBehaviorTree(behaviorComp);
 }
 
 void AAIEnemyController::ActorsPerceptionUpdated(const TArray<AActor*>& UpdatedActors)

@@ -26,6 +26,6 @@ private:
 public:
 	virtual void OnPossess(APawn* InPawn) override;
 
-	//UFUNCTION()
-	virtual void ActorsPerceptionUpdated(const TArray<AActor*>& UpdatedActors) override;
+	UFUNCTION()
+	void ActorsPerceptionUpdated(const TArray<AActor*>& UpdatedActors);
 };
