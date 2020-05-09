@@ -33,8 +33,6 @@ void AAIEnemyController::OnPossess(APawn* pawn)
 
 void AAIEnemyController::ActorsPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
 {
-	UE_LOG(LogTemp, Warning, TEXT("ActorsPerceptionUpdated ActorsPerceptionUpdated"));
-
 	for (AActor* actor : UpdatedActors)
 	{
 		IFighter* actorFighter = Cast<IFighter>(actor);

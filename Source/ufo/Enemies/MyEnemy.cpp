@@ -1,4 +1,7 @@
 #include "MyEnemy.h"
+#include "DrawDebugHelpers.h"
+#include "Engine/World.h"
+#include "ufo/Interfaces/Damagable.h"
 
 AMyEnemy::AMyEnemy()
 {
@@ -42,8 +45,29 @@ void AMyEnemy::Health(float amount)
 	}
 }
 
-void AMyEnemy::Attack()
+void AMyEnemy::Attack(AActor* actor)
 {
-	UE_LOG(LogTemp, Warning, TEXT("I am shooting"));
+	FHitResult hitResult;
+	GetWorld()->LineTraceSingleByChannel(
+		hitResult,
+		GetActorLocation(),
+		actor->GetActorLocation(),
+		ECollisionChannel::ECC_Destructible
+	);
+
+	DrawDebugLine(GetWorld(),
+		GetActorLocation(),
+		actor->GetActorLocation(),		
+		FColor::Blue, false, 3);
+
+	if (hitResult.GetActor())
+	{
+		IDamagable* damagable = Cast<IDamagable>(hitResult.GetActor());
+
+		if (damagable)
+		{
+			damagable->Damage(damage);
+		}
+	}
 }
 

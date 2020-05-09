@@ -14,6 +14,9 @@ class UFO_API UShootTask : public UBTTaskNode
 {
 	GENERATED_BODY()
 
+private:
+	UPROPERTY(EditAnywhere) FBlackboardKeySelector playerKeySelector;
+
 protected:
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 };

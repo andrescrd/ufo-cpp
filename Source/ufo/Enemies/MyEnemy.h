@@ -29,5 +29,5 @@ public:
 
 	virtual void Damage(float amount);
 	virtual	void Health(float amount);
-	virtual	void Attack();;
+	virtual	void Attack(AActor *actor);;
 };
