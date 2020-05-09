@@ -15,7 +15,7 @@ public:
 	AAIEnemyController();
 
 private:
-	class UAIPerceptionComponent* aiPerception;
+	UPROPERTY(VisibleAnywhere) class UAIPerceptionComponent* aiPerception;
 	class UAISenseConfig_Sight* sightConfig;
 
 	//UPROPERTY(EditAnywhere) class UB* blackboardComp;
