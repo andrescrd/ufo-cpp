@@ -22,6 +22,7 @@ private:
 	UPROPERTY(EditAnywhere) class UBehaviorTree* behaviorComp;
 	//UPROPERTY(EditAnywhere)	TSubclassOf<class AActor*> actorToAttack;
 	UPROPERTY(EditAnywhere) FName playerKeySelector;
+	UPROPERTY(EditAnywhere) FName isAgresiveKeySelector;
 
 public:
 	virtual void OnPossess(APawn* InPawn) override;

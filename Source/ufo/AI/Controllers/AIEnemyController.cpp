@@ -6,6 +6,7 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "ufo/Interfaces/Fighter.h"
+#include "ufo/Interfaces/EnemyAttack.h"
 
 AAIEnemyController::AAIEnemyController()
 {
@@ -29,6 +30,13 @@ void AAIEnemyController::OnPossess(APawn* pawn)
 	UBlackboardData* currentBB = behaviorComp->BlackboardAsset;
 	UseBlackboard(currentBB, Blackboard);
 	RunBehaviorTree(behaviorComp);
+
+	IEnemyAttack* enemy = Cast<IEnemyAttack>(pawn);
+
+	if (!enemy)
+	{
+		Blackboard->SetValueAsBool(isAgresiveKeySelector, true);
+	}
 }
 
 void AAIEnemyController::ActorsPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
