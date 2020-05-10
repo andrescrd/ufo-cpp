@@ -31,7 +31,7 @@ void AAIEnemyController::OnPossess(APawn* pawn)
 	UseBlackboard(currentBB, Blackboard);
 	RunBehaviorTree(behaviorComp);
 
-	IEnemyAttack* enemy = Cast<IEnemyAttack>(pawn);
+	IEnemyAttack* enemy = Cast<IEnemyAttack>(pawn->GetOwner());
 
 	if (!enemy)
 	{
