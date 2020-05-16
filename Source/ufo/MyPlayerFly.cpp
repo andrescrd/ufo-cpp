@@ -15,7 +15,9 @@ AMyPlayerFly::AMyPlayerFly()
 	Body->SetSimulatePhysics(true);
 	Body->SetEnableGravity(false);
 	Body->SetLinearDamping(1);
+	Body->SetAngularDamping(1);
 	Body->SetConstraintMode(EDOFMode::XYPlane);
+
 }
 
 //// Called when the game starts or when spawned
@@ -35,8 +37,8 @@ AMyPlayerFly::AMyPlayerFly()
 void AMyPlayerFly::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
 {
 	playerInputComponent->BindAxis("Horizontal", this, &AMyPlayerFly::Rotate);
-	playerInputComponent->BindAction("Fast", EInputEvent::IE_Pressed, this, &AMyPlayerFly::StartBoost);
-	playerInputComponent->BindAction("Fast", EInputEvent::IE_Released, this, &AMyPlayerFly::StopBoost);
+	playerInputComponent->BindAction("Fast", IE_Pressed, this, &AMyPlayerFly::StartBoost);
+	playerInputComponent->BindAction("Fast", IE_Released, this, &AMyPlayerFly::StopBoost);
 }
 
 void AMyPlayerFly::Rotate(float value)
@@ -47,23 +49,28 @@ void AMyPlayerFly::Rotate(float value)
 
 void AMyPlayerFly::StartBoost()
 {
-	GetWorldTimerManager().SetTimer(boostTimerHadle, this, &AMyPlayerFly::BoostTimer, .5f, true);
+	GetWorldTimerManager().SetTimer(boostTimerHadle, this, &AMyPlayerFly::BoostTimer, 1, true);
 }
 
 void AMyPlayerFly::BoostTimer()
 {
-	fastBoostForceCounter += fastBoostForce;
+	fastBoostForceCounter = fastBoostForceCounter + fastBoostForce;
 
-	UE_LOG(LogTemp, Warning, TEXT("counter %s"), fastBoostForceCounter);
+	UE_LOG(LogTemp, Warning, TEXT("counter") );
 }
 
 void AMyPlayerFly::StopBoost()
 {
-	GetWorldTimerManager().ClearTimer(boostTimerHadle);
-
 	UE_LOG(LogTemp, Warning, TEXT("accumulate %s"), fastBoostForceCounter);
 
-	FVector BoostVelocity = GetActorRotation().Vector() * velocity * fastBoostForce * GetWorld()->GetDeltaSeconds();
-	Body->SetPhysicsLinearVelocity(BoostVelocity, true);
+
+
+	GetWorldTimerManager().ClearTimer(boostTimerHadle);
+
+
+	//FVector BoostVelocity = GetActorRotation().Vector() * velocity * fastBoostForce * GetWorld()->GetDeltaSeconds();
+	//Body->SetPhysicsLinearVelocity(BoostVelocity, true);
+
+	//fastBoostForceCounter = 0;
 }
 

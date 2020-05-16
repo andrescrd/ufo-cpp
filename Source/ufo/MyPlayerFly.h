@@ -15,9 +15,6 @@ public:
 	// Sets default values for this actor's properties
 	AMyPlayerFly();
 
-private:
-	float fastBoostForceCounter = 0;
-
 protected:
 	// Called when the game starts or when spawned
 	//virtual void BeginPlay() override;
@@ -27,6 +24,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere) class UStaticMeshComponent* Body;
 
+	UPROPERTY(VisibleAnywhere) float fastBoostForceCounter = 0;
 	UPROPERTY(EditAnywhere) float velocity = 100;
 	UPROPERTY(EditAnywhere) float rotationVelocity = 45;
 	UPROPERTY(EditAnywhere)	float fastBoostForce = 50;

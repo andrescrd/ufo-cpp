@@ -89,7 +89,7 @@ void AMyPlayer::StopFastBoost()
 {
 	hasFastBoost = false;
 	GetWorldTimerManager().ClearTimer(fastBoostTimerHandle);
-	OnStopAbduction();
+	OnStopFastBoost();
 }
 
 void AMyPlayer::StartAbduction()

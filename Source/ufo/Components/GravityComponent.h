@@ -28,9 +28,9 @@ public:
 	FVector initialLocation;
 	float currentRotation;
 	float startingAngle;
-	float rotationSpeed = 50;
 
-	UPROPERTY(EditAnywhere) float radious = 200;
+	UPROPERTY(EditAnywhere) float rotationSpeed = 100;
+	UPROPERTY(EditAnywhere) float radious = 1000;
 	UPROPERTY(EditAnywhere) AActor* targetActor;
 
 	// Called every frame

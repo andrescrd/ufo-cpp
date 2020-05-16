@@ -16,7 +16,7 @@ FVector UGravityComponent::RotateActorAroundPoint(AActor* other, FVector targetL
 		FVector rotatorVector = FVector(currentRadious, 0, 0).RotateAngleAxis(rotationRate + angle, FVector(0, 0, 1));
 	
 		FVector rotatorResult = location + rotatorVector;
-		GetOwner()->GetParentActor()->SetActorLocation(rotatorResult);
+		GetOwner()->GetRootComponent()->SetWorldLocation(rotatorResult);
 	
 		return location;
 }
@@ -25,7 +25,7 @@ FVector UGravityComponent::RotateActorAroundPoint(AActor* other, FVector targetL
 void UGravityComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	initialLocation = GetOwner()->GetParentActor()->GetActorLocation();
+	initialLocation = GetOwner()->GetRootComponent()->GetComponentLocation();
 }
 
 // Called every frame
