@@ -54,23 +54,15 @@ void AMyPlayerFly::StartBoost()
 
 void AMyPlayerFly::BoostTimer()
 {
-	fastBoostForceCounter = fastBoostForceCounter + fastBoostForce;
-
-	UE_LOG(LogTemp, Warning, TEXT("counter") );
+	fastBoostForceCounter += fastBoostForce;
 }
 
 void AMyPlayerFly::StopBoost()
 {
-	UE_LOG(LogTemp, Warning, TEXT("accumulate %s"), fastBoostForceCounter);
-
-
-
 	GetWorldTimerManager().ClearTimer(boostTimerHadle);
 
-
-	//FVector BoostVelocity = GetActorRotation().Vector() * velocity * fastBoostForce * GetWorld()->GetDeltaSeconds();
-	//Body->SetPhysicsLinearVelocity(BoostVelocity, true);
-
-	//fastBoostForceCounter = 0;
+	FVector BoostVelocity = GetActorRotation().Vector() * velocity * fastBoostForce * GetWorld()->GetDeltaSeconds();
+	Body->SetPhysicsLinearVelocity(BoostVelocity, true);
+	fastBoostForceCounter = 0;
 }
 
