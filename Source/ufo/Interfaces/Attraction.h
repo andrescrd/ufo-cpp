@@ -14,14 +14,16 @@ class UAttraction : public UInterface
 };
 
 /**
- * 
+ *
  */
 class UFO_API IAttraction
 {
 	GENERATED_BODY()
 
-	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
+		// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	virtual void Attraction(AActor* other) = 0;
-	virtual float GetMass() = 0;
+	virtual float GeAttractiontMass() = 0;
+	virtual UStaticMeshComponent* GetStaticMesh() = 0;
+	virtual FVector GetLocation() = 0;
 };

@@ -7,7 +7,7 @@
 #include "Orbitiers.generated.h"
 
 UCLASS()
-class UFO_API AOrbitiers : public AActor
+class UFO_API AOrbitiers : public AActor, public IAttraction
 {
 	GENERATED_BODY()
 
@@ -23,10 +23,13 @@ protected:
 
 public:
 	UPROPERTY(EditAnywhere) float mass;
+	UPROPERTY(EditAnywhere) bool useDefaultMass = false;
 
 	// Called every frame
 	void Tick(float DeltaTime) override;
 
 	void Attraction(AActor* objectToAttract);
-	float GetMass();
+	float GeAttractiontMass();
+	UStaticMeshComponent* GetStaticMesh();
+	FVector GetLocation();
 };

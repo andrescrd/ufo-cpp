@@ -4,7 +4,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Orbitiers.h"
 
-const float multiply = 100;
+const float multiplier = 100;
 
 AOrbitiers::AOrbitiers()
 {
@@ -15,18 +15,17 @@ void AOrbitiers::BeginPlay()
 {
 	Super::BeginPlay();
 
-	TArray<UStaticMeshComponent*> staticMesh;
-	GetComponents(staticMesh);
-	currentStaticMesh = staticMesh[0];
+	currentStaticMesh = GetStaticMesh();
+
+	if (currentStaticMesh == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("dont have a static mesh"));
+		return;
+	}
 
 	TSubclassOf<AOrbitiers> classToFind = AOrbitiers::StaticClass();
 	TArray<AActor*> actorsTemp;
-
-	UE_LOG(LogTemp, Warning, TEXT("start"));
-
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), classToFind, actorsTemp);
-
-	UE_LOG(LogTemp, Warning, TEXT("ehre start"));
 
 	if (actorsTemp.Num() > 0)
 	{
@@ -34,7 +33,7 @@ void AOrbitiers::BeginPlay()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("dont find actors -*------*-"));
+		UE_LOG(LogTemp, Warning, TEXT("dont find actors"));
 	}
 }
 
@@ -59,33 +58,56 @@ void AOrbitiers::Tick(float DeltaTime)
 
 void AOrbitiers::Attraction(AActor* objectToAttract)
 {
-	AOrbitiers* attractedActor = Cast<AOrbitiers>(objectToAttract);
+	IAttraction* attractedActor = Cast<IAttraction>(objectToAttract);
 
 	if (attractedActor)
-	{
-		TArray<UStaticMeshComponent*> staticMesh;
-		attractedActor->GetComponents(staticMesh);	
+	{		
+		UStaticMeshComponent* attractedActorStaticMesh = attractedActor->GetStaticMesh();
 
-		if (staticMesh.Num() > 0)
-		{
-
-			FVector difference = GetActorLocation() - attractedActor->GetActorLocation();
-			float dist = difference.Size();
-			float gravity = (6.7f * currentStaticMesh->GetMass() *staticMesh[0]->GetMass() * multiply) / (dist * dist);
-
-			FVector gravityDirection = difference.GetSafeNormal();
-			FVector force = gravity * gravityDirection;
-
-			staticMesh[0]->AddForce(force, NAME_None, true);
-		}
-		else
+		if (attractedActorStaticMesh == nullptr)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("dont have a static mesh"));
+			return;
 		}
+
+		FVector difference = GetActorLocation() - attractedActor->GetLocation();
+		float dist = difference.Size();
+		float gravity = (6.7f * GeAttractiontMass() * attractedActor->GeAttractiontMass() * multiplier) / (dist * dist);
+
+		FVector gravityDirection = difference.GetSafeNormal();
+		FVector force = gravity * gravityDirection;
+
+		attractedActorStaticMesh->AddForce(force, NAME_None, true);
 	}
 }
 
-float AOrbitiers::GetMass()
+float AOrbitiers::GeAttractiontMass()
 {
-	return mass;
+	if (useDefaultMass)
+	{
+		return GetStaticMesh()->GetMass();
+	}
+	else {
+		return mass;
+	}
+}
+
+UStaticMeshComponent* AOrbitiers::GetStaticMesh()
+{
+	TArray< UStaticMeshComponent*> staticMeshArray;
+	GetComponents(staticMeshArray);
+
+	if (staticMeshArray.Num() > 0)
+	{
+		return staticMeshArray[0];
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
+FVector AOrbitiers::GetLocation()
+{
+	return GetActorLocation();
 }

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "ufo\Interfaces\Attraction.h"
 #include "MyGravityActor.generated.h"
 
 UCLASS()
