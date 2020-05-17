@@ -13,8 +13,7 @@ void URotateAroundActor::BeginPlay()
 
 	if (rotateAroundActor == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Rotator Around Actor is not set on %s"), *GetReadableName());
-		return;
+		UE_LOG(LogTemp, Warning, TEXT("Rotator Around Actor is not set on %s"), *GetReadableName());
 	}
 
 	if (rotationRadious.IsZero())

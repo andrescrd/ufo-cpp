@@ -74,6 +74,7 @@ void AMyPlayerFly::StopBoost()
 
 void AMyPlayerFly::OnRotationZone(AActor* other)
 {
+	UE_LOG(LogTemp, Warning, TEXT("rotation zone"));
 	isInRotationZone = true;
 	RotateAroundActor->Activate();
 	RotateAroundActor->rotateAroundActor = other;

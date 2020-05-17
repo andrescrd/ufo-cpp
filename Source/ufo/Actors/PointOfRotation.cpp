@@ -24,6 +24,8 @@ void APointOfRotation::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Ot
 
 	if (player)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("rotation zone, player"));
+
 		player->OnRotationZone(this);
 	}
 }
