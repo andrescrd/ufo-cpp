@@ -4,6 +4,7 @@
 #include "MyPlayerFly.h"
 #include "Components/InputComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/RotateAroundActor.h"
 #include "Engine/World.h"
 #include "TimerManager.h"
 
@@ -16,8 +17,9 @@ AMyPlayerFly::AMyPlayerFly()
 	Body->SetEnableGravity(false);
 	Body->SetLinearDamping(1);
 	Body->SetAngularDamping(1);
-	Body->SetConstraintMode(EDOFMode::XYPlane);
+	Body->SetConstraintMode(EDOFMode::XZPlane);
 
+	RotateAroundActor = CreateDefaultSubobject<URotateAroundActor>("RotateAroundActor");
 }
 
 //// Called when the game starts or when spawned
@@ -43,7 +45,7 @@ void AMyPlayerFly::SetupPlayerInputComponent(UInputComponent* playerInputCompone
 
 void AMyPlayerFly::Rotate(float value)
 {
-	FRotator rotator = FRotator(0, value * rotationVelocity * GetWorld()->GetDeltaSeconds(), 0);
+	FRotator rotator = FRotator(value * rotationVelocity * GetWorld()->GetDeltaSeconds(), 0, 0);
 	AddActorLocalRotation(rotator, true);
 }
 
