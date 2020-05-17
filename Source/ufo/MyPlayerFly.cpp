@@ -81,6 +81,7 @@ void AMyPlayerFly::OnRotationZone(AActor* other)
 
 void AMyPlayerFly::DeactivateRotation()
 {
+	isInRotationZone = false;
 	RotateAroundActor->Deactivate();
 	RotateAroundActor->rotateAroundActor = nullptr;
 }
