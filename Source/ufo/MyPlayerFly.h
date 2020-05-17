@@ -21,6 +21,7 @@ protected:
 
 public:
 	FTimerHandle boostTimerHadle;
+	bool isInRotationZone;
 
 	UPROPERTY(VisibleAnywhere) class UStaticMeshComponent* Body;
 	UPROPERTY(VisibleAnywhere) class URotateAroundActor* RotateAroundActor;
@@ -38,4 +39,7 @@ public:
 	void StartBoost();
 	void BoostTimer();
 	void StopBoost();
+
+	void OnRotationZone(class AActor* other);
+	void DeactivateRotation();
 };

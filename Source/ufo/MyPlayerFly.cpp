@@ -11,6 +11,8 @@
 // Sets default values
 AMyPlayerFly::AMyPlayerFly()
 {
+	//PrimaryActorTick.bCanEverTick = true;
+
 	Body = CreateDefaultSubobject<UStaticMeshComponent>("Body");
 	Body->SetupAttachment(GetRootComponent());
 	Body->SetSimulatePhysics(true);
@@ -33,7 +35,6 @@ AMyPlayerFly::AMyPlayerFly()
 //void AMyPlayerFly::Tick(float DeltaTime)
 //{
 //	Super::Tick(DeltaTime);
-//
 //}
 
 void AMyPlayerFly::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
@@ -52,6 +53,9 @@ void AMyPlayerFly::Rotate(float value)
 void AMyPlayerFly::StartBoost()
 {
 	GetWorldTimerManager().SetTimer(boostTimerHadle, this, &AMyPlayerFly::BoostTimer, 1, true);
+
+	if (isInRotationZone)
+		DeactivateRotation();
 }
 
 void AMyPlayerFly::BoostTimer()
@@ -66,5 +70,18 @@ void AMyPlayerFly::StopBoost()
 	FVector BoostVelocity = GetActorRotation().Vector() * velocity * fastBoostForce * GetWorld()->GetDeltaSeconds();
 	Body->SetPhysicsLinearVelocity(BoostVelocity, true);
 	fastBoostForceCounter = 0;
+}
+
+void AMyPlayerFly::OnRotationZone(AActor* other)
+{
+	isInRotationZone = true;
+	RotateAroundActor->Activate();
+	RotateAroundActor->rotateAroundActor = other;
+}
+
+void AMyPlayerFly::DeactivateRotation()
+{
+	RotateAroundActor->Deactivate();
+	RotateAroundActor->rotateAroundActor = nullptr;
 }
 
