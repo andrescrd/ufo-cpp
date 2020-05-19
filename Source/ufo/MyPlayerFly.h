@@ -37,6 +37,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float rotationVelocity = 90;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)	float fastBoostForce = 500;
 
+	UPROPERTY(EditAnywhere)	float minAngleRotation = 0;
+	UPROPERTY(EditAnywhere)	float maxAngleRotation = -180;
+
 	// Called every frame
 	//virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* playerInputComponent) override;

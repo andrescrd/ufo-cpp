@@ -18,7 +18,6 @@ AMyPlayerFly::AMyPlayerFly()
 
 	RootComponent = Body;
 	SpringArm->AttachTo(RootComponent);
-	SpringArm->SetWorldRotation(FRotator(0, -90, 0));
 	SpringArm->TargetArmLength = 3000.0f;
 
 	Camera->AttachTo(SpringArm, USpringArmComponent::SocketName);
@@ -55,7 +54,8 @@ void AMyPlayerFly::VerticalMovement(float value)
 void AMyPlayerFly::Rotate(float value)
 {
 	FRotator componentRotation = SpringArm->GetComponentRotation();
-	componentRotation.Yaw += value * rotationVelocity * GetWorld()->GetDeltaSeconds();
+	componentRotation.Yaw +=  -value * rotationVelocity * GetWorld()->GetDeltaSeconds();
+	componentRotation.Yaw = FMath::Clamp(componentRotation.Yaw, minAngleRotation, maxAngleRotation);
 	SpringArm->SetWorldRotation(componentRotation);
 }
 
