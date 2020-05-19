@@ -14,9 +14,10 @@ AMyPlayerFly::AMyPlayerFly()
 	//PrimaryActorTick.bCanEverTick = true;
 
 	Body = CreateDefaultSubobject<UStaticMeshComponent>("Body");
+	Body->AddRelativeLocation(FVector(0, 0, 0));
 	Body->SetupAttachment(GetRootComponent());
 	Body->SetSimulatePhysics(true);
-	Body->SetEnableGravity(false);
+	Body->SetEnableGravity(true);
 	Body->SetLinearDamping(1);
 	Body->SetAngularDamping(1);
 	Body->SetConstraintMode(EDOFMode::XZPlane);
@@ -52,10 +53,10 @@ void AMyPlayerFly::Rotate(float value)
 
 void AMyPlayerFly::StartBoost()
 {
-	GetWorldTimerManager().SetTimer(boostTimerHadle, this, &AMyPlayerFly::BoostTimer, 1, true);
-
 	if (isInRotationZone)
 		DeactivateRotation();
+
+	GetWorldTimerManager().SetTimer(boostTimerHadle, this, &AMyPlayerFly::BoostTimer, 1, true);
 }
 
 void AMyPlayerFly::BoostTimer()
@@ -67,7 +68,7 @@ void AMyPlayerFly::StopBoost()
 {
 	GetWorldTimerManager().ClearTimer(boostTimerHadle);
 
-	FVector BoostVelocity = GetActorRotation().Vector() * velocity * fastBoostForce * GetWorld()->GetDeltaSeconds();
+	FVector BoostVelocity = GetActorUpVector() * velocity * fastBoostForce * GetWorld()->GetDeltaSeconds();
 	Body->SetPhysicsLinearVelocity(BoostVelocity, true);
 	fastBoostForceCounter = 0;
 }
@@ -76,8 +77,8 @@ void AMyPlayerFly::OnRotationZone(AActor* other)
 {
 	UE_LOG(LogTemp, Warning, TEXT("rotation zone"));
 	isInRotationZone = true;
-	RotateAroundActor->Activate();
 	RotateAroundActor->rotateAroundActor = other;
+	RotateAroundActor->Activate();
 }
 
 void AMyPlayerFly::DeactivateRotation()

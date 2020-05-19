@@ -25,7 +25,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float rotationSpeed = 50;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FVector rotationRadious = FVector::ZeroVector;
+		float rotationRadious = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FVector rotationAxis = FVector::UpVector;
 

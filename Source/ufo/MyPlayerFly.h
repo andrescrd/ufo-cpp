@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "Components\RotateAroundActor.h"
 #include "MyPlayerFly.generated.h"
 
 UCLASS()
@@ -23,13 +24,13 @@ public:
 	FTimerHandle boostTimerHadle;
 	bool isInRotationZone;
 
-	UPROPERTY(VisibleAnywhere) class UStaticMeshComponent* Body;
-	UPROPERTY(VisibleAnywhere) class URotateAroundActor* RotateAroundActor;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UStaticMeshComponent* Body;
+	UPROPERTY(VisibleAnywhere) URotateAroundActor* RotateAroundActor;
 
-	UPROPERTY(VisibleAnywhere) float fastBoostForceCounter = 0;
-	UPROPERTY(EditAnywhere) float velocity = 800;
-	UPROPERTY(EditAnywhere) float rotationVelocity = 90;
-	UPROPERTY(EditAnywhere)	float fastBoostForce = 500;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) float fastBoostForceCounter = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) float velocity = 800;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) float rotationVelocity = 90;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)	float fastBoostForce = 500;
 
 	// Called every frame
 	//virtual void Tick(float DeltaTime) override;
