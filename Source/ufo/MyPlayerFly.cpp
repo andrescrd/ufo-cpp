@@ -3,8 +3,6 @@
 
 #include "MyPlayerFly.h"
 #include "Components/InputComponent.h"
-#include "Components/StaticMeshComponent.h"
-#include "Components/RotateAroundActor.h"
 #include "Engine/World.h"
 #include "TimerManager.h"
 
@@ -14,15 +12,18 @@ AMyPlayerFly::AMyPlayerFly()
 	//PrimaryActorTick.bCanEverTick = true;
 
 	Body = CreateDefaultSubobject<UStaticMeshComponent>("Body");
-	Body->AddRelativeLocation(FVector(0, 0, 0));
-	Body->SetupAttachment(GetRootComponent());
 	Body->SetSimulatePhysics(true);
-	Body->SetEnableGravity(true);
-	Body->SetLinearDamping(1);
-	Body->SetAngularDamping(1);
+	Body->SetEnableGravity(false);
 	Body->SetConstraintMode(EDOFMode::XZPlane);
 
-	RotateAroundActor = CreateDefaultSubobject<URotateAroundActor>("RotateAroundActor");
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>("Spring Arm");
+	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
+
+	RootComponent = Body;
+	SpringArm->AttachTo(GetRootComponent());
+	SpringArm->TargetArmLength = 2000.0f;
+	
+	Camera->AttachTo(SpringArm, USpringArmComponent::SocketName);		 
 }
 
 //// Called when the game starts or when spawned
@@ -41,21 +42,28 @@ AMyPlayerFly::AMyPlayerFly()
 void AMyPlayerFly::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
 {
 	playerInputComponent->BindAxis("Horizontal", this, &AMyPlayerFly::Rotate);
+	playerInputComponent->BindAxis("Vaertical", this, &AMyPlayerFly::VerticalMovement);
+
+	
 	playerInputComponent->BindAction("Fast", IE_Pressed, this, &AMyPlayerFly::StartBoost);
 	playerInputComponent->BindAction("Fast", IE_Released, this, &AMyPlayerFly::StopBoost);
+}
+
+void AMyPlayerFly::VerticalMovement(float value)
+{
+	FVector rotator = FVector(0, 0, value * velocity * GetWorld()->GetDeltaSeconds());
+
+	AddActorLocalOffset(rotator, true);
 }
 
 void AMyPlayerFly::Rotate(float value)
 {
 	FRotator rotator = FRotator(value * rotationVelocity * GetWorld()->GetDeltaSeconds(), 0, 0);
-	AddActorLocalRotation(rotator, true);
+	SpringArm->SetWorldRotation(rotator);
 }
 
 void AMyPlayerFly::StartBoost()
 {
-	if (isInRotationZone)
-		DeactivateRotation();
-
 	GetWorldTimerManager().SetTimer(boostTimerHadle, this, &AMyPlayerFly::BoostTimer, 1, true);
 }
 
@@ -72,19 +80,3 @@ void AMyPlayerFly::StopBoost()
 	Body->SetPhysicsLinearVelocity(BoostVelocity, true);
 	fastBoostForceCounter = 0;
 }
-
-void AMyPlayerFly::OnRotationZone(AActor* other)
-{
-	UE_LOG(LogTemp, Warning, TEXT("rotation zone"));
-	isInRotationZone = true;
-	RotateAroundActor->rotateAroundActor = other;
-	RotateAroundActor->Activate();
-}
-
-void AMyPlayerFly::DeactivateRotation()
-{
-	isInRotationZone = false;
-	RotateAroundActor->Deactivate();
-	RotateAroundActor->rotateAroundActor = nullptr;
-}
-

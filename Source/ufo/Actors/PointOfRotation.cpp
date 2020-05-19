@@ -20,7 +20,7 @@ void APointOfRotation::BeginPlay()
 
 void APointOfRotation::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("rotation zone, player"));
+	/*UE_LOG(LogTemp, Warning, TEXT("rotation zone, player"));
 
 	AMyPlayerFly* player = Cast<AMyPlayerFly>(OtherActor);
 
@@ -29,5 +29,5 @@ void APointOfRotation::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Ot
 		UE_LOG(LogTemp, Warning, TEXT("rotation zone, player"));
 
 		player->OnRotationZone(this);
-	}
+	}*/
 }

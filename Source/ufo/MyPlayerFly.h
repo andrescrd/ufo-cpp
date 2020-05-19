@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "Components\RotateAroundActor.h"
+#include "Components/StaticMeshComponent.h"
+#include "Components/RotateAroundActor.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "MyPlayerFly.generated.h"
 
 UCLASS()
@@ -25,7 +28,9 @@ public:
 	bool isInRotationZone;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UStaticMeshComponent* Body;
-	UPROPERTY(VisibleAnywhere) URotateAroundActor* RotateAroundActor;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) URotateAroundActor* RotateAroundActor;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) USpringArmComponent* SpringArm;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UCameraComponent* Camera;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) float fastBoostForceCounter = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float velocity = 800;
@@ -36,11 +41,9 @@ public:
 	//virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* playerInputComponent) override;
 
+	void VerticalMovement(float value);
 	void Rotate(float value);
 	void StartBoost();
 	void BoostTimer();
 	void StopBoost();
-
-	void OnRotationZone(class AActor* other);
-	void DeactivateRotation();
 };
