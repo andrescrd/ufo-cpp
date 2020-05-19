@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "MyPlayerFly.h"
 #include "Components/InputComponent.h"
 #include "Engine/World.h"
@@ -20,10 +17,11 @@ AMyPlayerFly::AMyPlayerFly()
 	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
 
 	RootComponent = Body;
-	SpringArm->AttachTo(GetRootComponent());
-	SpringArm->TargetArmLength = 2000.0f;
-	
-	Camera->AttachTo(SpringArm, USpringArmComponent::SocketName);		 
+	SpringArm->AttachTo(RootComponent);
+	SpringArm->SetWorldRotation(FRotator(0, -90, 0));
+	SpringArm->TargetArmLength = 3000.0f;
+
+	Camera->AttachTo(SpringArm, USpringArmComponent::SocketName);
 }
 
 //// Called when the game starts or when spawned
@@ -42,9 +40,8 @@ AMyPlayerFly::AMyPlayerFly()
 void AMyPlayerFly::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
 {
 	playerInputComponent->BindAxis("Horizontal", this, &AMyPlayerFly::Rotate);
-	playerInputComponent->BindAxis("Vaertical", this, &AMyPlayerFly::VerticalMovement);
+	playerInputComponent->BindAxis("Vertical", this, &AMyPlayerFly::VerticalMovement);
 
-	
 	playerInputComponent->BindAction("Fast", IE_Pressed, this, &AMyPlayerFly::StartBoost);
 	playerInputComponent->BindAction("Fast", IE_Released, this, &AMyPlayerFly::StopBoost);
 }
@@ -52,14 +49,14 @@ void AMyPlayerFly::SetupPlayerInputComponent(UInputComponent* playerInputCompone
 void AMyPlayerFly::VerticalMovement(float value)
 {
 	FVector rotator = FVector(0, 0, value * velocity * GetWorld()->GetDeltaSeconds());
-
 	AddActorLocalOffset(rotator, true);
 }
 
 void AMyPlayerFly::Rotate(float value)
 {
-	FRotator rotator = FRotator(value * rotationVelocity * GetWorld()->GetDeltaSeconds(), 0, 0);
-	SpringArm->SetWorldRotation(rotator);
+	FRotator componentRotation = SpringArm->GetComponentRotation();
+	componentRotation.Yaw += value * rotationVelocity * GetWorld()->GetDeltaSeconds();
+	SpringArm->SetWorldRotation(componentRotation);
 }
 
 void AMyPlayerFly::StartBoost()
