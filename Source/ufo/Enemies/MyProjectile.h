@@ -19,7 +19,7 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditAnywhere) UStaticMeshComponent* Mesh;
+	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* Mesh;
 	UPROPERTY(EditAnywhere) FVector movementDirection = FVector::ForwardVector;
 	UPROPERTY(EditAnywhere) float speed = 100;
 	UPROPERTY(EditAnywhere) float damage = 10;
