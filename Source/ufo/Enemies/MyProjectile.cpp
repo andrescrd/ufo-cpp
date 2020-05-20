@@ -11,6 +11,7 @@ AMyProjectile::AMyProjectile()
 	Dimensions = FVector(300, 0, 0);
 	AxisVector = FVector(0, 0, 1);
 	Multiplier = 50.f;
+	PointOfRotation = FVector(0,0,0);
 }
 
 void AMyProjectile::BeginPlay()
@@ -21,7 +22,7 @@ void AMyProjectile::BeginPlay()
 
 void AMyProjectile::Tick(float DeltaTime)
 {
-	FVector NewLocation = FVector(0, 0, 0);
+	FVector NewLocation = PointOfRotation;
 	// rotate around player
 	// FVector NewLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
 

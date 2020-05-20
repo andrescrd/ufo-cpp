@@ -13,7 +13,7 @@ class UFO_API AMyProjectile : public AActor
 public:
 	AMyProjectile();
 private: 
-	
+	FVector initialLocation;
 
 protected:
 	virtual void BeginPlay() override;
@@ -22,11 +22,13 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(VisibleAnywhere, Category = Movement)
-		FVector initialLocation;
+
 	// declare our float variables
 	UPROPERTY(VisibleAnywhere, Category = Movement)
 		UStaticMeshComponent* Mesh;
+	UPROPERTY(EditAnywhere, Category = Movement)
+		FVector PointOfRotation;
+	
 	UPROPERTY(EditAnywhere, Category = Movement)
 		float AngleAxis;
 
