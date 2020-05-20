@@ -17,10 +17,21 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* Mesh;
-	UPROPERTY(EditAnywhere) FVector movementDirection = FVector::ForwardVector;
-	UPROPERTY(EditAnywhere) float speed = 100;
-	UPROPERTY(EditAnywhere) float damage = 10;
+	// declare our float variables
+	UPROPERTY(VisibleAnywhere, Category = Movement)
+		UStaticMeshComponent* Mesh;
+	UPROPERTY(EditAnywhere, Category = Movement)
+		float AngleAxis;
+
+	UPROPERTY(EditAnywhere, Category = Movement)
+		FVector Dimensions;
+
+	UPROPERTY(EditAnywhere, Category = Movement)
+		FVector AxisVector;
+
+	UPROPERTY(EditAnywhere, Category = Movement)
+		float Multiplier;
 };
