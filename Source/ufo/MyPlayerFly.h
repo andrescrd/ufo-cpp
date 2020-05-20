@@ -19,6 +19,9 @@ public:
 	// Sets default values for this actor's properties
 	AMyPlayerFly();
 
+private: 
+	float initialArmLength;
+
 protected:
 	// Called when the game starts or when spawned
 	//virtual void BeginPlay() override;
@@ -39,6 +42,7 @@ public:
 
 	UPROPERTY(EditAnywhere)	float minAngleRotation = 0;
 	UPROPERTY(EditAnywhere)	float maxAngleRotation = -180;
+	UPROPERTY(EditAnywhere)	float armLengthVariation = 80;
 
 	// Called every frame
 	//virtual void Tick(float DeltaTime) override;

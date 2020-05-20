@@ -21,6 +21,8 @@ AMyPlayerFly::AMyPlayerFly()
 	SpringArm->TargetArmLength = 3000.0f;
 
 	Camera->AttachTo(SpringArm, USpringArmComponent::SocketName);
+
+	initialArmLength = SpringArm->TargetArmLength;
 }
 
 //// Called when the game starts or when spawned
@@ -47,16 +49,19 @@ void AMyPlayerFly::SetupPlayerInputComponent(UInputComponent* playerInputCompone
 
 void AMyPlayerFly::VerticalMovement(float value)
 {
-	FVector rotator = FVector(0, 0, value * velocity * GetWorld()->GetDeltaSeconds());
-	AddActorLocalOffset(rotator, true);
+	FVector movment = FVector(0, 0, value * velocity * GetWorld()->GetDeltaSeconds());
+	AddActorLocalOffset(movment, true);
 }
 
 void AMyPlayerFly::Rotate(float value)
 {
 	FRotator componentRotation = SpringArm->GetComponentRotation();
-	componentRotation.Yaw +=  -value * rotationVelocity * GetWorld()->GetDeltaSeconds();
+	componentRotation.Yaw += -value * rotationVelocity * GetWorld()->GetDeltaSeconds();
 	componentRotation.Yaw = FMath::Clamp(componentRotation.Yaw, minAngleRotation, maxAngleRotation);
 	SpringArm->SetWorldRotation(componentRotation);
+
+	float armLength = FMath::Clamp(SpringArm->TargetArmLength  + value * rotationVelocity, initialArmLength - armLengthVariation, initialArmLength + armLengthVariation);
+	SpringArm->TargetArmLength = armLength;
 }
 
 void AMyPlayerFly::StartBoost()
