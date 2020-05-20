@@ -7,7 +7,7 @@
 #include "Components/SphereComponent.h"
 #include "Components/PrimitiveComponent.h"
 #include "DrawDebugHelpers.h"
-#include "Interfaces/Damagable.h"
+#include "Interfaces/Healthable.h"
 #include "Interfaces/Abducible.h"
 #include "GameFramework/Character.h"
 
@@ -163,11 +163,11 @@ void AMyPlayer::Fire(int fireAmount, float fireRadio)
 
 		if (hitResult.GetActor())
 		{
-			IDamagable* damagable = Cast<IDamagable>(hitResult.GetActor());
+			IHealthable* other = Cast<IHealthable>(hitResult.GetActor());
 
-			if (damagable)
+			if (other)
 			{
-				damagable->Damage(damage);
+				other->Damage(damage);
 			}
 		}
 	}

@@ -17,12 +17,13 @@ void ASpawner::BeginPlay()
 
 void ASpawner::SpawnerTimer()
 {
-	if (enemyCounter <= maxEnemySpawned)
+	if (maxEnemySpawned == 0 || enemyCounter <= maxEnemySpawned )
 	{
-		float x = FMath::RandRange(-radio, radio);
-		float y = FMath::RandRange(-radio, radio);
+		float x = FMath::RandRange(-radio.X, radio.X);
+		float y = FMath::RandRange(-radio.Y, radio.Y);
+		float z = FMath::RandRange(-radio.Z, radio.Z);
 
-		FVector location = FVector::FVector(GetActorLocation().X + x, GetActorLocation().Y + y, GetActorLocation().Z);
+		FVector location = GetActorLocation() + FVector(x,y,z);
 		GetWorld()->SpawnActor<AActor>(actorToSpawn, location, FRotator(0, 0, 0));
 
 		enemyCounter++;

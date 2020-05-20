@@ -1,7 +1,6 @@
 #include "MyEnemy.h"
 #include "DrawDebugHelpers.h"
 #include "Engine/World.h"
-#include "ufo/Interfaces/Damagable.h"
 
 AMyEnemy::AMyEnemy()
 {
@@ -62,11 +61,11 @@ void AMyEnemy::Attack(AActor* actor)
 
 	if (hitResult.GetActor())
 	{
-		IDamagable* damagable = Cast<IDamagable>(hitResult.GetActor());
+		IHealthable* other= Cast<IHealthable>(hitResult.GetActor());
 
-		if (damagable)
+		if (other)
 		{
-			damagable->Damage(damage);
+			other->Damage(damage);
 		}
 	}
 }

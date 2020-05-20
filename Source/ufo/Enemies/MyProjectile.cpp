@@ -20,7 +20,8 @@ void AMyProjectile::BeginPlay()
 
 void AMyProjectile::Tick(float DeltaTime)
 {
-	FVector NewLocation = FVector(0, 0, 400);
+	//FVector NewLocation = FVector(0, 0, 400);
+	FVector NewLocation = GetActorLocation();
 
 	// rotate around player
 	// FVector NewLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();

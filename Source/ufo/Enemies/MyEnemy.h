@@ -2,13 +2,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "ufo/Interfaces/Damagable.h"
 #include "ufo/Interfaces/Healthable.h"
 #include "ufo/Interfaces/EnemyAttack.h"
 #include "MyEnemy.generated.h"
 
 UCLASS()
-class UFO_API AMyEnemy : public ACharacter, public IDamagable, public IHealthable, public IEnemyAttack
+class UFO_API AMyEnemy : public ACharacter, public IHealthable, public IEnemyAttack
 {
 	GENERATED_BODY()
 

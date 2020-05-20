@@ -30,7 +30,7 @@ public:
 	UPROPERTY(EditAnywhere) float timeToSpawn = 5;
 	UPROPERTY(EditAnywhere) float timeToIncrementSpawnVelocity = 10;
 	UPROPERTY(EditAnywhere) int maxEnemySpawned = 10;
-	UPROPERTY(EditAnywhere) float radio = 500;
+	UPROPERTY(EditAnywhere) FVector radio = FVector(500,500,0);
 	UPROPERTY(EditAnywhere) float factorOfIncrement = 2;
 
 
@@ -38,6 +38,5 @@ public:
 
 	void SpawnerTimer();
 	void StopSpawner();
-
 	void IncrementVelocityOfSpawn();
 };

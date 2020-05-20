@@ -19,4 +19,5 @@ class UFO_API IHealthable
 
 public:
 	virtual void Health(float amount) = 0;
+	virtual void Damage(float amount) = 0;
 };
