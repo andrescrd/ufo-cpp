@@ -1,27 +1,22 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "MyProjectile.h"
 
-// Sets default values
 AMyProjectile::AMyProjectile()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	RootComponent = Mesh;
 }
 
-// Called when the game starts or when spawned
 void AMyProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
-// Called every frame
 void AMyProjectile::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
 
+	FVector direction = movementDirection.GetSafeNormal() * speed * DeltaTime;
+	AddActorLocalOffset(direction);
 }
 

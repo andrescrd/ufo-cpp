@@ -1,8 +1,7 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/StaticMeshComponent.h"
 #include "GameFramework/Actor.h"
 #include "MyProjectile.generated.h"
 
@@ -10,17 +9,18 @@ UCLASS()
 class UFO_API AMyProjectile : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
+
+public:
 	AMyProjectile();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
+public:
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(EditAnywhere) UStaticMeshComponent* Mesh;
+	UPROPERTY(EditAnywhere) FVector movementDirection = FVector::ForwardVector;
+	UPROPERTY(EditAnywhere) float speed = 100;
+	UPROPERTY(EditAnywhere) float damage = 10;
 };
