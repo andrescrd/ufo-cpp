@@ -17,16 +17,19 @@ void ASpawner::BeginPlay()
 
 void ASpawner::SpawnerTimer()
 {
-	if (maxEnemySpawned == 0 || enemyCounter <= maxEnemySpawned )
-	{
-		float x = FMath::RandRange(-radio.X, radio.X);
-		float y = FMath::RandRange(-radio.Y, radio.Y);
-		float z = FMath::RandRange(-radio.Z, radio.Z);
+	if (maxEnemySpawned == 0 || enemyCounter <= maxEnemySpawned)
+	{		
+		for (int i = 0; i < FMath::RandRange(1, 8); i++)
+		{
+			float x = FMath::RandRange(-radio.X, radio.X);
+			float y = FMath::RandRange(-radio.Y, radio.Y);
+			float z = FMath::RandRange(-radio.Z, radio.Z);
 
-		FVector location = GetActorLocation() + FVector(x,y,z);
-		GetWorld()->SpawnActor<AActor>(actorToSpawn, location, FRotator(0, 0, 0));
+			FVector location = GetActorLocation() + FVector(x, y, z);
+			GetWorld()->SpawnActor<AActor>(actorToSpawn, location, FRotator(0, 0, 0));
 
-		enemyCounter++;
+			enemyCounter++;
+		}
 	}
 	else
 	{

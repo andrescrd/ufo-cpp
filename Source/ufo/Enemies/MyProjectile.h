@@ -12,6 +12,9 @@ class UFO_API AMyProjectile : public AActor
 
 public:
 	AMyProjectile();
+private: 
+	UPROPERTY(VisibleAnywhere, Category = Movement)
+	FVector initialLocation;
 
 protected:
 	virtual void BeginPlay() override;
@@ -34,4 +37,7 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = Movement)
 		float Multiplier;
+
+	UPROPERTY(EditAnywhere, Category = Movement)
+		FVector Direction = FVector::ForwardVector;
 };

@@ -11,38 +11,42 @@ AMyProjectile::AMyProjectile()
 	Dimensions = FVector(300, 0, 0);
 	AxisVector = FVector(0, 0, 1);
 	Multiplier = 50.f;
+
+	initialLocation = GetActorLocation();
 }
 
 void AMyProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+
+
 }
 
 void AMyProjectile::Tick(float DeltaTime)
 {
-	//FVector NewLocation = FVector(0, 0, 400);
-	FVector NewLocation = GetActorLocation();
+	FVector NewLocation = FVector(0, 0, 300);
+	SetActorLocation(GetActorLocation() +  (Direction * Multiplier),true);
 
 	// rotate around player
 	// FVector NewLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
 
-	AngleAxis += DeltaTime * Multiplier;
+	//AngleAxis += DeltaTime * Multiplier;
 
-	if (AngleAxis >= 360.0f)
-	{
-		AngleAxis = 0;
-	}
+	//if (AngleAxis >= 360.0f)
+	//{
+	//	AngleAxis = 0;
+	//}
 
-	FVector RotateValue = Dimensions.RotateAngleAxis(AngleAxis, AxisVector);
+	//FVector RotateValue = Dimensions.RotateAngleAxis(AngleAxis, AxisVector);
 
-	NewLocation.X += RotateValue.X;
-	NewLocation.Y += RotateValue.Y;
-	NewLocation.Z += RotateValue.Z;
+	//NewLocation.X += RotateValue.X;
+	//NewLocation.Y += RotateValue.Y;
+	//NewLocation.Z += RotateValue.Z;
 
-	FRotator NewRotation = FRotator(0, AngleAxis, 0);
+	//FRotator NewRotation = FRotator(0, AngleAxis, 0);
 
-	FQuat QuatRotation = FQuat(NewRotation);
+	//FQuat QuatRotation = FQuat(NewRotation);
 
-	SetActorLocationAndRotation(NewLocation, QuatRotation, false, 0, ETeleportType::None);
+	//SetActorLocationAndRotation(NewLocation, QuatRotation, false, 0, ETeleportType::None);
 }
 
