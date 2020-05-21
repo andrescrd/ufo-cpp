@@ -18,7 +18,7 @@ void ASpawner::BeginPlay()
 void ASpawner::SpawnerTimer()
 {
 	if (maxEnemySpawned == 0 || enemyCounter <= maxEnemySpawned)
-	{		
+	{
 		for (int i = 0; i < FMath::RandRange(1, 8); i++)
 		{
 			float x = FMath::RandRange(-radio.X, radio.X);
@@ -47,5 +47,7 @@ void ASpawner::StopSpawner()
 
 void ASpawner::IncrementVelocityOfSpawn()
 {
-	timeToSpawn = timeToSpawn / factorOfIncrement;
+	timeToSpawn -= 0.1 * factorOfIncrement;
+	GetWorldTimerManager().ClearTimer(spawnerTimerHandle);
+	GetWorldTimerManager().SetTimer(spawnerTimerHandle, this, &ASpawner::SpawnerTimer, timeToSpawn, true);
 }
