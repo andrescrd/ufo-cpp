@@ -24,7 +24,7 @@ private:
 
 protected:
 	// Called when the game starts or when spawned
-	//virtual void BeginPlay() override;
+	virtual void BeginPlay() override;
 
 public:
 	FTimerHandle boostTimerHadle;
@@ -53,4 +53,7 @@ public:
 	void StartBoost();
 	void BoostTimer();
 	void StopBoost();
+
+	UFUNCTION()
+		void OnOverlap(AActor* OverlappedActor, AActor* OtherActor);
 };

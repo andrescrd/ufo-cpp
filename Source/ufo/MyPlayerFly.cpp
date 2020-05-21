@@ -2,6 +2,7 @@
 #include "Components/InputComponent.h"
 #include "Engine/World.h"
 #include "TimerManager.h"
+#include "Engine/Engine.h"
 
 // Sets default values
 AMyPlayerFly::AMyPlayerFly()
@@ -25,12 +26,13 @@ AMyPlayerFly::AMyPlayerFly()
 	initialArmLength = SpringArm->TargetArmLength;
 }
 
-//// Called when the game starts or when spawned
-//void AMyPlayerFly::BeginPlay()
-//{
-//	Super::BeginPlay();
-//
-//}
+// Called when the game starts or when spawned
+void AMyPlayerFly::BeginPlay()
+{
+	Super::BeginPlay();
+
+	OnActorBeginOverlap.AddDynamic(this, &AMyPlayerFly::OnOverlap);
+}
 
 //// Called every frame
 //void AMyPlayerFly::Tick(float DeltaTime)
@@ -81,4 +83,9 @@ void AMyPlayerFly::StopBoost()
 	FVector BoostVelocity = GetActorUpVector() * velocity * fastBoostForce * GetWorld()->GetDeltaSeconds();
 	Body->SetPhysicsLinearVelocity(BoostVelocity, true);
 	fastBoostForceCounter = 0;
+}
+
+void AMyPlayerFly::OnOverlap(AActor* OverlappedActor, AActor* OtherActor)
+{
+	if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("I Overlap: %s"), *OtherActor->GetName()));
 }

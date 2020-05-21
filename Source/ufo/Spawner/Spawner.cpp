@@ -47,7 +47,7 @@ void ASpawner::StopSpawner()
 
 void ASpawner::IncrementVelocityOfSpawn()
 {
-	timeToSpawn = FMath::Clamp(0.1f * factorOfIncrement, 0.3f, timeToSpawn);
+	timeToSpawn = FMath::Clamp(timeToSpawn - 0.1f * factorOfIncrement, 0.3f, timeToSpawn);
 	GetWorldTimerManager().ClearTimer(spawnerTimerHandle);
 	GetWorldTimerManager().SetTimer(spawnerTimerHandle, this, &ASpawner::SpawnerTimer, timeToSpawn, true);
 }
