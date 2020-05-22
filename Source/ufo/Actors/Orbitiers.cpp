@@ -1,8 +1,8 @@
+#include "Orbitiers.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SphereComponent.h"
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
-#include "Orbitiers.h"
 
 const float multiplier = 100;
 
@@ -61,7 +61,7 @@ void AOrbitiers::Attraction(AActor* objectToAttract)
 	IAttraction* attractedActor = Cast<IAttraction>(objectToAttract);
 
 	if (attractedActor)
-	{		
+	{
 		UStaticMeshComponent* attractedActorStaticMesh = attractedActor->GetStaticMesh();
 
 		if (attractedActorStaticMesh == nullptr)
