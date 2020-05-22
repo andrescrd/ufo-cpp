@@ -90,14 +90,14 @@ void AMyPlayerFly::Health(float amount)
 {
 	life += amount;
 
-	if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Life: %s"), life));
+	if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Life")));
 }
 
 void AMyPlayerFly::Damage(float amount)
 {
 	life -= amount;
 
-	if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Life: %s"), life));
+	if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Life")));
 
 	if (life <= 0)
 	{
@@ -115,7 +115,7 @@ void AMyPlayerFly::OnOverlap(AActor* OverlappedActor, AActor* OtherActor)
 		{
 			Health(projectile->HealthAndDamage);
 		}
-		else if (projectile->ProjectileType == ECustom::Type::Friendly)
+		else if (projectile->ProjectileType == ECustom::Type::Hostile)
 		{
 			Damage(projectile->HealthAndDamage);
 		}
