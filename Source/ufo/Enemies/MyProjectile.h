@@ -5,6 +5,17 @@
 #include "GameFramework/Actor.h"
 #include "MyProjectile.generated.h"
 
+UENUM(BlueprintType)
+namespace ECustom
+{
+	enum Type
+	{
+		Friendly,
+		Neutral,
+		Hostile,
+	};
+}
+
 UCLASS()
 class UFO_API AMyProjectile : public AActor
 {
@@ -43,4 +54,7 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = Movement)
 		FVector Direction = FVector::ForwardVector;
+
+	UPROPERTY(EditAnywhere, Category = ProjectileType)
+	TEnumAsByte<ECustom::Type> ProjectileType;
 };
