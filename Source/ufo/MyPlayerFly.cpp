@@ -3,6 +3,7 @@
 #include "Engine/World.h"
 #include "TimerManager.h"
 #include "Engine/Engine.h"
+#include "Enemies\MyProjectile.h"
 
 // Sets default values
 AMyPlayerFly::AMyPlayerFly()
@@ -62,7 +63,7 @@ void AMyPlayerFly::Rotate(float value)
 	componentRotation.Yaw = FMath::Clamp(componentRotation.Yaw, minAngleRotation, maxAngleRotation);
 	SpringArm->SetWorldRotation(componentRotation);
 
-	float armLength = FMath::Clamp(SpringArm->TargetArmLength  + value * rotationVelocity, initialArmLength - armLengthVariation, initialArmLength + armLengthVariation);
+	float armLength = FMath::Clamp(SpringArm->TargetArmLength + value * rotationVelocity, initialArmLength - armLengthVariation, initialArmLength + armLengthVariation);
 	SpringArm->TargetArmLength = armLength;
 }
 
@@ -85,7 +86,38 @@ void AMyPlayerFly::StopBoost()
 	fastBoostForceCounter = 0;
 }
 
+void AMyPlayerFly::Health(float amount)
+{
+	life += amount;
+
+	if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Life: %s"), life));
+}
+
+void AMyPlayerFly::Damage(float amount)
+{
+	life -= amount;
+
+	if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Life: %s"), life));
+
+	if (life <= 0)
+	{
+		InputComponent->Deactivate();
+	}
+}
+
 void AMyPlayerFly::OnOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
-	if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("I Overlap: %s"), *OtherActor->GetName()));
+	AMyProjectile* projectile = Cast<AMyProjectile>(OtherActor);
+
+	if (projectile != nullptr)
+	{
+		if (projectile->ProjectileType == ECustom::Type::Friendly)
+		{
+			Health(projectile->HealthAndDamage);
+		}
+		else if (projectile->ProjectileType == ECustom::Type::Friendly)
+		{
+			Damage(projectile->HealthAndDamage);
+		}
+	}
 }

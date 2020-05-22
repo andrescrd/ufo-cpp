@@ -23,7 +23,7 @@ class UFO_API AMyProjectile : public AActor
 
 public:
 	AMyProjectile();
-private: 
+private:
 	FVector initialLocation;
 
 protected:
@@ -39,7 +39,7 @@ public:
 		UStaticMeshComponent* Mesh;
 	UPROPERTY(EditAnywhere, Category = Movement)
 		FVector PointOfRotation;
-	
+
 	UPROPERTY(EditAnywhere, Category = Movement)
 		float AngleAxis;
 
@@ -56,5 +56,8 @@ public:
 		FVector Direction = FVector::ForwardVector;
 
 	UPROPERTY(EditAnywhere, Category = ProjectileType)
-	TEnumAsByte<ECustom::Type> ProjectileType;
+		TEnumAsByte<ECustom::Type> ProjectileType = ECustom::Type::Neutral;
+
+	UPROPERTY(EditAnywhere, Category = ProjectileType)
+		float HealthAndDamage = 0;
 };
