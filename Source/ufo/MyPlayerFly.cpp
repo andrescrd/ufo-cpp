@@ -3,13 +3,11 @@
 #include "Engine/World.h"
 #include "TimerManager.h"
 #include "Engine/Engine.h"
-#include "Enemies\MyProjectile.h"
+#include "ufo/Enemies/MyProjectile.h"
+#include "Player/PlayerBase.h"
 
-// Sets default values
-AMyPlayerFly::AMyPlayerFly()
+AMyPlayerFly::AMyPlayerFly() : APlayerBase()
 {
-	//PrimaryActorTick.bCanEverTick = true;
-
 	Body = CreateDefaultSubobject<UStaticMeshComponent>("Body");
 	Body->SetSimulatePhysics(true);
 	Body->SetEnableGravity(false);
@@ -27,19 +25,11 @@ AMyPlayerFly::AMyPlayerFly()
 	initialArmLength = SpringArm->TargetArmLength;
 }
 
-// Called when the game starts or when spawned
 void AMyPlayerFly::BeginPlay()
 {
 	Super::BeginPlay();
-
 	OnActorBeginOverlap.AddDynamic(this, &AMyPlayerFly::OnOverlap);
 }
-
-//// Called every frame
-//void AMyPlayerFly::Tick(float DeltaTime)
-//{
-//	Super::Tick(DeltaTime);
-//}
 
 void AMyPlayerFly::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
 {
@@ -86,25 +76,6 @@ void AMyPlayerFly::StopBoost()
 	fastBoostForceCounter = 0;
 }
 
-void AMyPlayerFly::Health(float amount)
-{
-	life += amount;
-
-	if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Life")));
-}
-
-void AMyPlayerFly::Damage(float amount)
-{
-	life -= amount;
-
-	if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Life")));
-
-	if (life <= 0)
-	{
-		InputComponent->Deactivate();
-	}
-}
-
 void AMyPlayerFly::OnOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
 	AMyProjectile* projectile = Cast<AMyProjectile>(OtherActor);
@@ -114,6 +85,7 @@ void AMyPlayerFly::OnOverlap(AActor* OverlappedActor, AActor* OtherActor)
 		if (projectile->ProjectileType == ECustom::Type::Friendly)
 		{
 			Health(projectile->HealthAndDamage);
+			AddItem();
 		}
 		else if (projectile->ProjectileType == ECustom::Type::Hostile)
 		{

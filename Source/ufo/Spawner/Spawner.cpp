@@ -19,7 +19,7 @@ void ASpawner::SpawnerTimer()
 {
 	if (maxEnemySpawned == 0 || enemyCounter <= maxEnemySpawned)
 	{
-		for (int i = 0; i < FMath::RandRange(1, 8); i++)
+		for (int i = 0; i < FMath::RandRange(minEnemySpawnerAtSameTime, maxEnemySpawnerAtSameTime); i++)
 		{
 			float x = FMath::RandRange(-radio.X, radio.X);
 			float y = FMath::RandRange(-radio.Y, radio.Y);

@@ -8,17 +8,18 @@
 #include "Components/RotateAroundActor.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Interfaces/Healthable.h"
+#include "ufo/Interfaces/Healthable.h"
+#include "Player/PlayerBase.h"
 #include "MyPlayerFly.generated.h"
 
 UCLASS()
-class UFO_API AMyPlayerFly : public APawn
+class UFO_API AMyPlayerFly : public APlayerBase
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	AMyPlayerFly();
+  AMyPlayerFly();
 
 private: 
 	float initialArmLength;
@@ -32,7 +33,6 @@ public:
 	bool isInRotationZone;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UStaticMeshComponent* Body;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) URotateAroundActor* RotateAroundActor;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) USpringArmComponent* SpringArm;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UCameraComponent* Camera;
 
@@ -45,20 +45,16 @@ public:
 	UPROPERTY(EditAnywhere)	float maxAngleRotation = -180;
 	UPROPERTY(EditAnywhere)	float armLengthVariation = 80;
 
-	UPROPERTY(EditAnywhere)	float life = 100;
-
 	// Called every frame
 	//virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* playerInputComponent) override;
 
 	void VerticalMovement(float value);
 	void Rotate(float value);
+
 	void StartBoost();
 	void BoostTimer();
 	void StopBoost();
-
-	void Health(float amount);
-	void Damage(float amount);
 
 	UFUNCTION()
 		void OnOverlap(AActor* OverlappedActor, AActor* OtherActor);

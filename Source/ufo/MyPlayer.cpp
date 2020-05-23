@@ -7,11 +7,12 @@
 #include "Components/SphereComponent.h"
 #include "Components/PrimitiveComponent.h"
 #include "DrawDebugHelpers.h"
-#include "Interfaces/Healthable.h"
-#include "Interfaces/Abducible.h"
+#include "ufo/Interfaces/Healthable.h"
+#include "ufo/Interfaces/Abducible.h"
+#include "Player/PlayerBase.h"
 #include "GameFramework/Character.h"
 
-AMyPlayer::AMyPlayer()
+AMyPlayer::AMyPlayer() : APlayerBase()
 {
 	//PrimaryActorTick.bCanEverTick = true;
 
@@ -36,11 +37,6 @@ void AMyPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	Abductor->OnComponentBeginOverlap.AddDynamic(this, &AMyPlayer::OnAbductorBeginOverlap);
-}
-
-void AMyPlayer::Tick(float DeltaTime)
-{
-
 }
 
 void AMyPlayer::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
@@ -115,15 +111,11 @@ void AMyPlayer::AbductionTimer()
 				abductible = Cast<IAbducible>(overlappedActors[i]);
 
 				if (abductible)
-				{
 					break;
-				}
 			}
 
 			if (abductible != nullptr)
-			{
 				abductible->StartAbduction(FVector(0, 0, abductionForce * abductionMulitply));
-			}
 		}
 	}
 }
@@ -166,9 +158,7 @@ void AMyPlayer::Fire(int fireAmount, float fireRadio)
 			IHealthable* other = Cast<IHealthable>(hitResult.GetActor());
 
 			if (other)
-			{
 				other->Damage(damage);
-			}
 		}
 	}
 }

@@ -4,12 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "Interfaces/Abducible.h"
-#include "Interfaces/Fighter.h"
+#include "ufo/Interfaces/Abducible.h"
+#include "Player/PlayerBase.h"
 #include "MyPlayer.generated.h"
 
 UCLASS()
-class UFO_API AMyPlayer : public APawn, public IFighter
+class UFO_API AMyPlayer : public APlayerBase
 {
 	GENERATED_BODY()
 
@@ -18,8 +18,7 @@ public:
 	AMyPlayer();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	void BeginPlay() override;
 
 private: 
 	float abductionMulitply = 100000.0f;
@@ -41,11 +40,12 @@ public:
 	UPROPERTY(EditAnywhere)	float rotationVelocity = 180;
 	UPROPERTY(EditAnywhere)	float fastBoostForce = 100;
 	UPROPERTY(EditAnywhere)	float fastBoostDuration = 1;
+
 	UPROPERTY(EditAnywhere) float damage = 10;
 	UPROPERTY(EditAnywhere) float shootForce = 500;
 	UPROPERTY(EditAnywhere) float abductionForce = 8;
 
-	virtual void Tick(float DeltaTime) override;
+	//virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* playerInputComponent) override;
 
 	void MoveVertical(float value);
