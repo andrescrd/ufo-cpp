@@ -171,5 +171,6 @@ void AMyPlayer::OnAbductorBeginOverlap(UPrimitiveComponent* OverlappedComp, AAct
 	{
 		actorAbducible->SuccessAbduction();
 		abductionCounter++;
+		AddItem();
 	}
 }
