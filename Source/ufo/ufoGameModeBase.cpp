@@ -6,7 +6,14 @@
 #include "UI/PlayerWidget.h"
 #include "UI/MainWidget.h"
 #include "Player/PlayerBase.h"
+#include "TimerManager.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/GameplayStatics.h"
+
+
+AufoGameModeBase::AufoGameModeBase(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
+{
+}
 
 void AufoGameModeBase::BeginPlay()
 {
@@ -33,35 +40,61 @@ void AufoGameModeBase::ChangeWidget(TSubclassOf<UUserWidget> NewWidgetClass)
 }
 
 void AufoGameModeBase::ChangePlayer(TSubclassOf<APawn> PlayerClass)
-{	
+{
 	if (PlayerClass != nullptr)
-	{
 		DefaultPawnClass = PlayerClass;
-	}
+}
+
+void AufoGameModeBase::StartGame()
+{
+	GetWorldTimerManager().SetTimer(timerHandle, this, &AufoGameModeBase::Timer, 1.0f, true);
+}
+
+void AufoGameModeBase::PauseGame()
+{
+	UGameplayStatics::SetGamePaused(GetWorld(), true);
+}
+
+void AufoGameModeBase::UpPauseGame()
+{
+	UGameplayStatics::SetGamePaused(GetWorld(), false);
 }
 
 void AufoGameModeBase::GoLevel1()
 {
-	GetWorld()->ServerTravel("level1");
+	UGameplayStatics::OpenLevel(GetWorld(), "level1");
 }
 
 void AufoGameModeBase::GoLevel2()
 {
-	GetWorld()->ServerTravel("level2");
+	UGameplayStatics::OpenLevel(GetWorld(), "level2");
 }
 
 void AufoGameModeBase::GoGameOver()
 {
-	GetWorld()->ServerTravel("gameover");
+	UGameplayStatics::OpenLevel(GetWorld(), "gameover");
 }
 
 void AufoGameModeBase::RestartGame()
 {
 	GoLevel1();
-	ResetLevel();
 }
 
 void AufoGameModeBase::ExitGame()
 {
 	UKismetSystemLibrary::QuitGame(GetWorld(), nullptr, EQuitPreference::Quit, true);
+}
+
+int AufoGameModeBase::GetTime()
+{
+	return currentTime;
+}
+
+void AufoGameModeBase::Timer()
+{
+	if (++currentTime >= initialTime)
+	{
+		GoLevel2();
+		GetWorldTimerManager().ClearTimer(timerHandle);;
+	}
 }

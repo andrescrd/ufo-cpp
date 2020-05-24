@@ -3,11 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "EditorUtilityWidget.h"
+#include "Blueprint/UserWidget.h"
 #include "ufo/ufoGameModeBase.h"
 #include "ufo/Player/PlayerBase.h"
 #include "Components/TextBlock.h"
 #include "Components/ProgressBar.h"
+
 #include "PlayerWidget.generated.h"
 
 /**
@@ -20,7 +21,7 @@ class UFO_API UPlayerWidget : public UUserWidget
 
 protected:
 	void NativeConstruct() override;
-	//void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+	void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 public:
 	AufoGameModeBase* gameMode;
@@ -37,4 +38,13 @@ public:
 		void UpdateLife(float health);
 	UFUNCTION()
 		void UpdateItems(int item);
+	UFUNCTION()
+		void UpdateTime(int time);	
+
+	UFUNCTION(BlueprintCallable)
+		void Pause();
+	UFUNCTION(BlueprintCallable)
+		void Resume();
+	UFUNCTION(BlueprintCallable)
+		void Quit();
 };
