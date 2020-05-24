@@ -6,9 +6,29 @@
 
 void UPlayerWidget::NativeConstruct()
 {
-	//GetWorld()
+	AGameModeBase* gameModeBase = GetWorld()->GetAuthGameMode<AGameModeBase>();
+
+	if (gameModeBase != nullptr)
+		gameMode = Cast<AufoGameModeBase>(gameModeBase);
+
+	APawn* pawn = GetWorld()->GetFirstPlayerController()->GetPawn();
+
+	if (pawn != nullptr)
+	{
+		player = Cast<APlayerBase>(pawn);
+		player->OnHealt.AddDynamic(this, &UPlayerWidget::UpdateLife);
+		player->OnAddItem.AddDynamic(this, &UPlayerWidget::UpdateItems);
+	}
 }
 
-void UPlayerWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+void  UPlayerWidget::UpdateLife(float health)
 {
+	float lifePercent = health / player->initialLife;
+	lifeBar->SetPercent(lifePercent);
+}
+
+void  UPlayerWidget::UpdateItems(int items)
+{
+	FText itemText = FText::FromString(FString::FromInt(items));
+	itemCounterText->SetText(itemText);
 }
