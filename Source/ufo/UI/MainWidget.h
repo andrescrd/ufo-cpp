@@ -3,19 +3,22 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "EditorUtilityWidget.h"
+#include "ufo/ufoGameModeBase.h"
 #include "MainWidget.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
-class UFO_API UMainWidget : public UEditorUtilityWidget
+class UFO_API UMainWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
-public:
 
+protected:
+	void NativeConstruct() override;
+	AufoGameModeBase* gameMode;
+
+public:
 	UFUNCTION(BlueprintCallable)
 		void Play();
 	UFUNCTION(BlueprintCallable)

@@ -19,6 +19,8 @@ AMyPlayerFly::AMyPlayerFly() : APlayerBase()
 	RootComponent = Body;
 	SpringArm->AttachTo(RootComponent);
 	SpringArm->TargetArmLength = 3000.0f;
+	SpringArm->bEnableCameraLag = true;
+	SpringArm->CameraLagSpeed = 3.0f;
 
 	Camera->AttachTo(SpringArm, USpringArmComponent::SocketName);
 

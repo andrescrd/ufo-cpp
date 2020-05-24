@@ -4,14 +4,21 @@
 #include "MainWidget.h"
 #include "Engine/World.h"
 #include "ufo/ufoGameModeBase.h"
-#include "GenericPlatform/GenericPlatformMisc.h"
+
+void UMainWidget::NativeConstruct()
+{
+	AGameModeBase* gameModeBase = GetWorld()->GetAuthGameMode<AGameModeBase>();
+
+	if (gameModeBase != nullptr)
+		gameMode = Cast<AufoGameModeBase>(gameModeBase);
+}
 
 void UMainWidget::Play()
 {
-	GetWorld()->ServerTravel("level1");
+	gameMode->GoLevel1();
 }
 
 void UMainWidget::Exit()
 {
-	FGenericPlatformMisc::RequestExit(false);
+	gameMode->ExitGame();
 }
