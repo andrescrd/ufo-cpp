@@ -11,6 +11,8 @@
 
 AMyPlayerFly::AMyPlayerFly() : APlayerBase()
 {
+	PrimaryActorTick.bCanEverTick = true;
+
 	Body = CreateDefaultSubobject<UStaticMeshComponent>("Body");
 	Body->SetSimulatePhysics(true);
 	Body->SetEnableGravity(false);
@@ -33,8 +35,13 @@ AMyPlayerFly::AMyPlayerFly() : APlayerBase()
 void AMyPlayerFly::BeginPlay()
 {
 	Super::BeginPlay();
-	GetWorldTimerManager().SetTimer(distanceTimerHandle, this, &AMyPlayerFly::DistanceTimer, 1.0f, true,2.0f);
 	OnActorBeginOverlap.AddDynamic(this, &AMyPlayerFly::OnOverlap);
+}
+
+void AMyPlayerFly::Tick(float DeltaTime)
+{
+	if(isAlive)
+		distance += DeltaTime;
 }
 
 void AMyPlayerFly::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
@@ -83,21 +90,11 @@ void AMyPlayerFly::StopBoost()
 	fastBoostForceCounter = 0;
 }
 
-void AMyPlayerFly::DistanceTimer()
-{
-	distance += velocity * GetWorld()->GetDeltaSeconds();
-}
-
-void AMyPlayerFly::StopDistanceTimer()
-{
-	GetWorldTimerManager().ClearTimer(distanceTimerHandle);
-}
-
 void AMyPlayerFly::OnOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
 	AMyProjectile* projectile = Cast<AMyProjectile>(OtherActor);
 
-	if (projectile != nullptr)
+	if (projectile != nullptr && isAlive)
 	{
 		if (projectile->ProjectileType == ECustom::Type::Friendly)
 		{
@@ -106,7 +103,7 @@ void AMyPlayerFly::OnOverlap(AActor* OverlappedActor, AActor* OtherActor)
 		}
 		else if (projectile->ProjectileType == ECustom::Type::Hostile)
 		{
-			Damage(projectile->HealthAndDamage);
+			Damage(projectile->HealthAndDamage);			
 		}
 	}
 }

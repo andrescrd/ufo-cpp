@@ -14,9 +14,6 @@ APlayerBase::APlayerBase()
 void APlayerBase::Health(float amount)
 {
 	life += amount;
-
-	//if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Life")));
-
 	OnHealt.Broadcast(life);
 }
 
@@ -28,7 +25,7 @@ void APlayerBase::Damage(float amount)
 
 	if (life <= 0)
 	{
-		DisableInput();
+		PlayerDie();
 	}
 
 	OnHealt.Broadcast(life);
@@ -40,9 +37,21 @@ void APlayerBase::AddItem()
 	OnAddItem.Broadcast(itemCounter);
 }
 
+void APlayerBase::UpdateDistance(float value)
+{
+	if (isAlive)
+		distance += value;
+}
+
 void APlayerBase::DisableInput()
 {
 	APawn* pawn = GetWorld()->GetFirstPlayerController()->GetPawn();
 	if (pawn)
 		pawn->DisableInput(GetWorld()->GetFirstPlayerController());
+}
+
+void APlayerBase::PlayerDie()
+{
+	isAlive = false;
+	DisableInput();
 }

@@ -44,15 +44,6 @@ protected:
 
 	UPROPERTY()
 		UUserWidget* CurrentWidget;
-
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Level")
-		int InitialTime = 20;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Level")
-		int Difficulty = 1;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Level")
-		bool UseTimeAsConditionEnd = false;
-
 public:
 	void EndGame();
 	void LevelComplete();
@@ -65,4 +56,11 @@ public:
 		void ExitGame();
 	UFUNCTION(BlueprintCallable, Category = "UMG Game")
 		void ChangeWidget(TSubclassOf<UUserWidget> NewWidgetClass);
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Level")
+		int InitialTime = 20;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Level")
+		int Difficulty = 1;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Level")
+		bool UseTimeAsConditionEnd = false;
 };

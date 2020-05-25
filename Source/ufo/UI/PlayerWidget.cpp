@@ -26,14 +26,24 @@ void UPlayerWidget::NativeConstruct()
 
 void UPlayerWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
-	if (gameMode != nullptr)
+	if (gameMode != nullptr && gameMode->UseTimeAsConditionEnd)
 		UpdateTime(gameMode->GetTime());
+
+	if (player != nullptr && gameMode != nullptr && !gameMode->UseTimeAsConditionEnd)
+		UpdateDistance(player->distance);
 }
 
 void  UPlayerWidget::UpdateLife(float health)
 {
 	float lifePercent = health / player->initialLife;
 	lifeBar->SetPercent(lifePercent);
+}
+
+void UPlayerWidget::UpdateDistance(float distance)
+{
+	//FText currentDistaceText = FText::FromString(FString::SanitizeFloat(distance));
+	FText currentDistaceText = FText::AsNumber(distance);
+	distanceText->SetText(currentDistaceText);
 }
 
 void  UPlayerWidget::UpdateItems(int items)

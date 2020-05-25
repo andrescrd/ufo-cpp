@@ -39,6 +39,8 @@ public:
 	UFUNCTION()
 		void UpdateLife(float health);
 	UFUNCTION()
+		void UpdateDistance(float distance);
+	UFUNCTION()
 		void UpdateItems(int item);
 	UFUNCTION()
 		void UpdateTime(int time);	

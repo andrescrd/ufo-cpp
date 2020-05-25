@@ -22,11 +22,11 @@ private:
 	float initialArmLength;
 	float fastBoostForceCounter = 0;
 	FTimerHandle boostTimerHadle;
-	FTimerHandle distanceTimerHandle;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 
 public:
 
@@ -34,7 +34,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) class USpringArmComponent* SpringArm;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) class UCameraComponent* Camera;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) float distance = 0;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly) float distance = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float velocity = 800;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float rotationVelocity = 90;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)	float fastBoostForce = 500;
@@ -44,7 +44,6 @@ public:
 	UPROPERTY(EditAnywhere)	float armLengthVariation = 80;
 
 	// Called every frame
-	//virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* playerInputComponent) override;
 
 	void VerticalMovement(float value);
@@ -54,8 +53,6 @@ public:
 	void BoostTimer();
 	void StopBoost();
 
-	void DistanceTimer();
-	void StopDistanceTimer();
 
 	UFUNCTION()
 		void OnOverlap(AActor* OverlappedActor, AActor* OtherActor);

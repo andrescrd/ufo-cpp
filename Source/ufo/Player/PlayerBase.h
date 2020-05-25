@@ -27,14 +27,15 @@ protected:
 	void AddItem();
 	void UpdateDistance(float value);
 	void DisableInput();
+	void PlayerDie();
 
 public:
 	int initialLife = 0;
+	bool isAlive = true;
 
-	UPROPERTY(EditAnywhere)
-		float life = 100;
-	UPROPERTY(VisibleAnywhere)
-		int itemCounter = 0;
+	UPROPERTY(EditAnywhere) float life = 100;
+	UPROPERTY(VisibleAnywhere) int itemCounter = 0;
+	UPROPERTY(VisibleAnywhere) float distance = 0;
 
 	FHealthDelegate OnHealt;
 	FAddItemDelegate OnAddItem;
