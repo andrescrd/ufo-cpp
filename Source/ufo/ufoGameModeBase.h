@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "Blueprint/UserWidget.h"
+#include  "Player\PlayerBase.h"
 #include "ufoGameModeBase.generated.h"
 
 /**
@@ -28,7 +29,7 @@ protected:
 		void Timer();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UMG Game")
-		TSubclassOf<UUserWidget> StartingWidgetClass;
+		TSubclassOf<UUserWidget> StartingWidgetClass;	
 	UPROPERTY()
 		UUserWidget* CurrentWidget;
 
@@ -48,19 +49,14 @@ public:
 		void PauseGame();
 	UFUNCTION(BlueprintCallable, Category = "UMG Game")
 		void UpPauseGame();
-
 	UFUNCTION(BlueprintCallable, Category = "UMG Game")
 		void GoLevel1();
-
 	UFUNCTION(BlueprintCallable, Category = "UMG Game")
 		void GoLevel2();
-
 	UFUNCTION(BlueprintCallable, Category = "UMG Game")
 		void GoGameOver();
-
 	UFUNCTION(BlueprintCallable, Category = "UMG Game")
 		void RestartGame();
-
 	UFUNCTION(BlueprintCallable, Category = "UMG Game")
 		void ExitGame();
 

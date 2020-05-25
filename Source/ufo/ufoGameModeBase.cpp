@@ -19,7 +19,6 @@ void AufoGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 	ChangeWidget(StartingWidgetClass);
-	//ChangePlayer(StartingPawnClass);
 }
 
 void AufoGameModeBase::ChangeWidget(TSubclassOf<UUserWidget> NewWidgetClass)
@@ -62,11 +61,13 @@ void AufoGameModeBase::UpPauseGame()
 
 void AufoGameModeBase::GoLevel1()
 {
+	ChangePlayer(CurrentPlayerFly);
 	UGameplayStatics::OpenLevel(GetWorld(), "level1");
 }
 
 void AufoGameModeBase::GoLevel2()
 {
+	ChangePlayer(CurrentPlayer);
 	UGameplayStatics::OpenLevel(GetWorld(), "level2");
 }
 
