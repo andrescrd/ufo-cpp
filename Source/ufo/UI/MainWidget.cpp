@@ -15,7 +15,7 @@ void UMainWidget::NativeConstruct()
 
 void UMainWidget::Play()
 {
-	gameMode->GoLevel1();
+	gameMode->LoadNextGame();
 }
 
 void UMainWidget::Exit()

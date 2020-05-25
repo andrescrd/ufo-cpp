@@ -45,6 +45,7 @@ void AMyPlayerFly::SetupPlayerInputComponent(UInputComponent* playerInputCompone
 void AMyPlayerFly::VerticalMovement(float value)
 {
 	FVector movment = FVector(0, 0, value * velocity * GetWorld()->GetDeltaSeconds());
+	//Body->AddImpulse(movment, NAME_None, true);
 	AddActorLocalOffset(movment, true);
 }
 
@@ -95,3 +96,7 @@ void AMyPlayerFly::OnOverlap(AActor* OverlappedActor, AActor* OtherActor)
 		}
 	}
 }
+//
+//void AMyPlayerFly::OnActorBump(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
+//{
+//}

@@ -29,6 +29,8 @@ public:
 	FTimerHandle stopFastBoostTimerHandle;
 
 	UPROPERTY(VisibleAnywhere)	class UStaticMeshComponent* Body;
+
+
 	UPROPERTY(VisibleAnywhere)	class UCapsuleComponent* AbductionZone;
 	UPROPERTY(VisibleAnywhere)	class USphereComponent* Abductor;
 

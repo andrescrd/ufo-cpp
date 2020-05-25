@@ -19,9 +19,9 @@ class UFO_API AMyPlayerFly : public APlayerBase
 
 public:
 	// Sets default values for this actor's properties
-  AMyPlayerFly();
+	AMyPlayerFly();
 
-private: 
+private:
 	float initialArmLength;
 
 protected:

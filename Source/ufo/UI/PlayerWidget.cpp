@@ -55,10 +55,10 @@ void UPlayerWidget::Quit()
 
 void UPlayerWidget::Pause()
 {
-	gameMode->PauseGame();
+	//gameMode->PauseGame();
 }
 
 void UPlayerWidget::Resume()
 {
-	gameMode->UpPauseGame();
+	//gameMode->UpPauseGame();
 }
