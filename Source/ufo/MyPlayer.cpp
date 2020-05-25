@@ -11,13 +11,15 @@
 #include "ufo/Interfaces/Abducible.h"
 #include "Player/PlayerBase.h"
 #include "GameFramework/Character.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 AMyPlayer::AMyPlayer() : APlayerBase()
 {
 	//PrimaryActorTick.bCanEverTick = true;
 
 	Body = CreateDefaultSubobject<UStaticMeshComponent>("Body");
-	Body->SetupAttachment(GetRootComponent());
+	RootComponent = Body;
 	Body->SetSimulatePhysics(true);
 	Body->SetEnableGravity(false);
 	Body->SetLinearDamping(1);
@@ -26,11 +28,21 @@ AMyPlayer::AMyPlayer() : APlayerBase()
 
 	AbductionZone = CreateDefaultSubobject<UCapsuleComponent>("Abduction Zone Collider");
 	AbductionZone->SetCapsuleSize(40, 100);
-	AbductionZone->SetupAttachment(Body);
+	AbductionZone->AttachTo(RootComponent);
 
 	Abductor = CreateDefaultSubobject<USphereComponent>("Abductor Collider");
 	Abductor->SetSphereRadius(40);
-	Abductor->SetupAttachment(Body);;
+	Abductor->AttachTo(RootComponent);
+
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>("Spring Arm");
+	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
+
+	SpringArm->AttachTo(RootComponent);
+	SpringArm->TargetArmLength = 1000.0f;
+	SpringArm->bEnableCameraLag = true;
+	SpringArm->CameraLagSpeed = 2.0f;
+
+	Camera->AttachTo(SpringArm, USpringArmComponent::SocketName);
 }
 
 void AMyPlayer::BeginPlay()

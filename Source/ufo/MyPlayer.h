@@ -29,7 +29,8 @@ public:
 	FTimerHandle stopFastBoostTimerHandle;
 
 	UPROPERTY(VisibleAnywhere)	class UStaticMeshComponent* Body;
-
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) class USpringArmComponent* SpringArm;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) class UCameraComponent* Camera;
 
 	UPROPERTY(VisibleAnywhere)	class UCapsuleComponent* AbductionZone;
 	UPROPERTY(VisibleAnywhere)	class USphereComponent* Abductor;

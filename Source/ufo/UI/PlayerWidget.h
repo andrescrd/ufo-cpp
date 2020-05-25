@@ -33,6 +33,8 @@ public:
 		UTextBlock* itemCounterText;
 	UPROPERTY(meta = (BindWidget))
 		UTextBlock* timeText;
+	UPROPERTY(meta = (BindWidget))
+		UTextBlock* distanceText;
 
 	UFUNCTION()
 		void UpdateLife(float health);

@@ -14,7 +14,6 @@
 void AufoGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
 
 	UUFOGameInstance* gameInstance = GetGameInstance<UUFOGameInstance>();
 	if (gameInstance != nullptr) {
@@ -111,7 +110,8 @@ void AufoGameModeBase::ChangeWidget(TSubclassOf<UUserWidget> NewWidgetClass)
 
 void AufoGameModeBase::StartGame()
 {
-	GetWorldTimerManager().SetTimer(timerHandle, this, &AufoGameModeBase::Timer, 1.0f, true);
+	if (UseTimeAsConditionEnd)
+		GetWorldTimerManager().SetTimer(TimerHandle, this, &AufoGameModeBase::Timer, 1.0f, true);
 }
 //
 //void AufoGameModeBase::PauseGame()
@@ -122,16 +122,6 @@ void AufoGameModeBase::StartGame()
 //void AufoGameModeBase::UpPauseGame()
 //{
 //	UGameplayStatics::SetGamePaused(GetWorld(), false);
-//}
-//
-//void AufoGameModeBase::GoLevel1()
-//{
-//	UGameplayStatics::OpenLevel(GetWorld(), "level1");
-//}
-//
-//void AufoGameModeBase::GoLevel2()
-//{
-//	UGameplayStatics::OpenLevel(GetWorld(), "level2");
 //}
 //
 //void AufoGameModeBase::GoGameOver()
@@ -151,14 +141,14 @@ void AufoGameModeBase::ExitGame()
 
 int AufoGameModeBase::GetTime()
 {
-	return currentTime;
+	return CurrentTime;
 }
 
 void AufoGameModeBase::Timer()
 {
-	if (++currentTime >= initialTime)
+	if (++CurrentTime >= InitialTime)
 	{
 		LevelComplete();
-		GetWorldTimerManager().ClearTimer(timerHandle);;
+		GetWorldTimerManager().ClearTimer(TimerHandle);;
 	}
 }

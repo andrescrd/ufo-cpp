@@ -25,6 +25,7 @@ protected:
 	void Health(float amount);
 	void Damage(float amount);
 	void AddItem();
+	void UpdateDistance(float value);
 	void DisableInput();
 
 public:
@@ -32,7 +33,7 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		float life = 100;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleAnywhere)
 		int itemCounter = 0;
 
 	FHealthDelegate OnHealt;

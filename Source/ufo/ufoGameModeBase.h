@@ -20,15 +20,17 @@ class UFO_API AufoGameModeBase : public AGameModeBase
 		//public:
 		//	AufoGameModeBase(const FObjectInitializer& ObjectInitializer);
 
-private:
-	class UUFOGameInstance* GameInstance;
-
 protected:
-	FTimerHandle timerHandle;
+	class UUFOGameInstance* GameInstance;
+	FTimerHandle TimerHandle;
 	FTimerHandle LevelSpawnTimer;
-	int currentTime = 0;
+	int CurrentTime = 0;
+	int32 CurrentLevelIndex = 0;
+	FString NextLevel;
 
-	virtual void BeginPlay() override;
+	void BeginPlay() override;
+	void CheckLevel();
+	FString CleanLevelString(UObject* context);
 
 	UFUNCTION()
 		void Timer();
@@ -40,33 +42,27 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UMG Game")
 		TSubclassOf<UUserWidget> GameCompleteWidgetClass;
 
-
 	UPROPERTY()
 		UUserWidget* CurrentWidget;
 
-	UPROPERTY(EditAnywhere)
-		int initialTime = 20;
-	UPROPERTY(EditAnywhere)
-		int difficulty = 1;
 
-	int32 CurrentLevelIndex = 0;
-	FString NextLevel;
-
-	void CheckLevel();
-	FString CleanLevelString(UObject* context);
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Level")
+		int InitialTime = 20;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Level")
+		int Difficulty = 1;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Level")
+		bool UseTimeAsConditionEnd = false;
 
 public:
 	void EndGame();
 	void LevelComplete();
 	void LoadNextGame();
+	int GetTime();
 
 	UFUNCTION(BlueprintCallable, Category = "UMG Game")
 		void StartGame();
 	UFUNCTION(BlueprintCallable, Category = "UMG Game")
 		void ExitGame();
-
 	UFUNCTION(BlueprintCallable, Category = "UMG Game")
 		void ChangeWidget(TSubclassOf<UUserWidget> NewWidgetClass);
-
-	int GetTime();
 };

@@ -5,6 +5,9 @@
 #include "Engine/Engine.h"
 #include "ufo/Enemies/MyProjectile.h"
 #include "Player/PlayerBase.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Components/StaticMeshComponent.h"
 
 AMyPlayerFly::AMyPlayerFly() : APlayerBase()
 {
@@ -30,6 +33,7 @@ AMyPlayerFly::AMyPlayerFly() : APlayerBase()
 void AMyPlayerFly::BeginPlay()
 {
 	Super::BeginPlay();
+	GetWorldTimerManager().SetTimer(distanceTimerHandle, this, &AMyPlayerFly::DistanceTimer, 1.0f, true,2.0f);
 	OnActorBeginOverlap.AddDynamic(this, &AMyPlayerFly::OnOverlap);
 }
 
@@ -79,6 +83,16 @@ void AMyPlayerFly::StopBoost()
 	fastBoostForceCounter = 0;
 }
 
+void AMyPlayerFly::DistanceTimer()
+{
+	distance += velocity * GetWorld()->GetDeltaSeconds();
+}
+
+void AMyPlayerFly::StopDistanceTimer()
+{
+	GetWorldTimerManager().ClearTimer(distanceTimerHandle);
+}
+
 void AMyPlayerFly::OnOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
 	AMyProjectile* projectile = Cast<AMyProjectile>(OtherActor);
@@ -96,7 +110,7 @@ void AMyPlayerFly::OnOverlap(AActor* OverlappedActor, AActor* OtherActor)
 		}
 	}
 }
-//
+
 //void AMyPlayerFly::OnActorBump(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
 //{
 //}

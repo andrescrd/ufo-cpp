@@ -4,10 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "Components/StaticMeshComponent.h"
 #include "Components/RotateAroundActor.h"
-#include "Camera/CameraComponent.h"
-#include "GameFramework/SpringArmComponent.h"
 #include "ufo/Interfaces/Healthable.h"
 #include "Player/PlayerBase.h"
 #include "MyPlayerFly.generated.h"
@@ -23,20 +20,21 @@ public:
 
 private:
 	float initialArmLength;
+	float fastBoostForceCounter = 0;
+	FTimerHandle boostTimerHadle;
+	FTimerHandle distanceTimerHandle;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:
-	FTimerHandle boostTimerHadle;
-	bool isInRotationZone;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UStaticMeshComponent* Body;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) USpringArmComponent* SpringArm;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UCameraComponent* Camera;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) class UStaticMeshComponent* Body;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) class USpringArmComponent* SpringArm;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) class UCameraComponent* Camera;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) float fastBoostForceCounter = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) float distance = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float velocity = 800;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float rotationVelocity = 90;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)	float fastBoostForce = 500;
@@ -55,6 +53,9 @@ public:
 	void StartBoost();
 	void BoostTimer();
 	void StopBoost();
+
+	void DistanceTimer();
+	void StopDistanceTimer();
 
 	UFUNCTION()
 		void OnOverlap(AActor* OverlappedActor, AActor* OtherActor);
