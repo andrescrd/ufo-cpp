@@ -9,6 +9,7 @@
 #include "Delegates/DelegateCombinations.h"
 #include "PlayerBase.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPlayerDieDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHealthDelegate, float, health);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAddItemDelegate, int, items);
 
@@ -39,4 +40,5 @@ public:
 
 	FHealthDelegate OnHealt;
 	FAddItemDelegate OnAddItem;
+	FPlayerDieDelegate OnPlayerDie;
 };

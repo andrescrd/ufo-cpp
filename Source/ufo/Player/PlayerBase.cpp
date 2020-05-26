@@ -53,5 +53,6 @@ void APlayerBase::DisableInput()
 void APlayerBase::PlayerDie()
 {
 	isAlive = false;
+	OnPlayerDie.Broadcast();
 	DisableInput();
 }

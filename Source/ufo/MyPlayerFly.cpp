@@ -5,6 +5,7 @@
 #include "Engine/Engine.h"
 #include "ufo/Enemies/MyProjectile.h"
 #include "Player/PlayerBase.h"
+#include "ufo/ufoGameModeBase.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -35,13 +36,25 @@ AMyPlayerFly::AMyPlayerFly() : APlayerBase()
 void AMyPlayerFly::BeginPlay()
 {
 	Super::BeginPlay();
+
+	CurrentGameMode = GetWorld()->GetAuthGameMode<AufoGameModeBase>();
 	OnActorBeginOverlap.AddDynamic(this, &AMyPlayerFly::OnOverlap);
 }
 
 void AMyPlayerFly::Tick(float DeltaTime)
 {
-	if(isAlive)
-		distance += DeltaTime;
+	if (isAlive) {
+		distance += DeltaTime * velocity / 100;
+
+		if (distance == CurrentGameMode->DistanceToReach)
+		{
+			CurrentGameMode->LevelComplete();
+		}
+	}
+	else
+	{
+		CurrentGameMode->EndGame();
+	}
 }
 
 void AMyPlayerFly::SetupPlayerInputComponent(UInputComponent* playerInputComponent)

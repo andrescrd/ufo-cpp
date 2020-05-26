@@ -17,4 +17,6 @@ class UFO_API UUFOGameInstance : public UGameInstance
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Levels")
 		TArray<FString> Levels;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Levels")
+		FString GameOverLevel;
 };

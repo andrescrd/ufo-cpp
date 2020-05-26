@@ -42,7 +42,10 @@ void  UPlayerWidget::UpdateLife(float health)
 void UPlayerWidget::UpdateDistance(float distance)
 {
 	//FText currentDistaceText = FText::FromString(FString::SanitizeFloat(distance));
-	FText currentDistaceText = FText::AsNumber(distance);
+	FNumberFormattingOptions options;
+	options.MinimumFractionalDigits = 2;
+	options.MaximumFractionalDigits = 2;
+	FText currentDistaceText = FText::AsNumber(distance,&options);
 	distanceText->SetText(currentDistaceText);
 }
 

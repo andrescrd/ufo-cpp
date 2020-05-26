@@ -22,6 +22,7 @@ private:
 	float initialArmLength;
 	float fastBoostForceCounter = 0;
 	FTimerHandle boostTimerHadle;
+	class AufoGameModeBase* CurrentGameMode;
 
 protected:
 	// Called when the game starts or when spawned

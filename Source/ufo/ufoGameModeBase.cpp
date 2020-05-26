@@ -10,7 +10,12 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include  "GameInstance/UFOGameInstance.h"
-
+//
+//AufoGameModeBase::AufoGameModeBase(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
+//{
+//	PrimaryActorTick.bCanEverTick = true;
+//}
+//
 void AufoGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
@@ -21,7 +26,8 @@ void AufoGameModeBase::BeginPlay()
 		ChangeWidget(StartingWidgetClass);
 		CheckLevel();
 	}
-	else {
+	else
+	{
 		UE_LOG(LogTemp, Error, TEXT("Fail to load GameInstance"));
 	}
 }
@@ -37,8 +43,10 @@ void AufoGameModeBase::CheckLevel()
 	}
 	else
 	{
-		NextLevel = "End";
+		NextLevel = GameInstance->GameOverLevel;
 	}
+
+	UE_LOG(LogTemp, Warning, TEXT("Next Levelt %s"), *NextLevel);
 }
 
 FString AufoGameModeBase::CleanLevelString(UObject* context)
@@ -58,17 +66,24 @@ FString AufoGameModeBase::CleanLevelString(UObject* context)
 
 void AufoGameModeBase::EndGame()
 {
-	FString LevelString = GetWorld()->GetMapName();
-	FName LavelToLoad = FName(*LevelString);
+	UE_LOG(LogTemp, Warning, TEXT("PlayerDie"));
 
+	FName LavelToLoad = FName(*GameInstance->GameOverLevel);
 	UGameplayStatics::OpenLevel(this, LavelToLoad, true);
 }
 
 void AufoGameModeBase::LevelComplete()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Level Complete"));
+
 	if (LevelCompleteWidgetClass)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Level Complete change widget"));
+
 		ChangeWidget(LevelCompleteWidgetClass);
+
+		UE_LOG(LogTemp, Warning, TEXT("Widget change"));
+
 		GetWorldTimerManager().SetTimer(LevelSpawnTimer, this, &AufoGameModeBase::LoadNextGame, 4.0f, false);
 	}
 }
@@ -84,10 +99,7 @@ void AufoGameModeBase::LoadNextGame()
 	}
 	else
 	{
-		if (CurrentWidget->GetClass() == LevelCompleteWidgetClass)
-		{
-
-		}
+		EndGame();
 	}
 }
 
