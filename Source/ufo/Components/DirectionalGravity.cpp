@@ -44,7 +44,7 @@ void UDirectionalGravity::TickComponent(float DeltaTime, ELevelTick TickType, FA
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	FRotator rotator = (UKismetMathLibrary::FindLookAtRotation(actor->GetActorLocation(), GetOwner()->GetActorLocation()));
-	FVector lookAtVector = UKismetMathLibrary::GetForwardVector(rotator);
+	FVector lookAtVector = rotator.Vector();
 
 	FMatrix matrix = FRotationMatrix::MakeFromZX(lookAtVector, GetOwner()->GetActorForwardVector());
 	GetOwner()->SetActorRotation(matrix.Rotator());
