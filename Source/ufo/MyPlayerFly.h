@@ -19,6 +19,7 @@ public:
 	AMyPlayerFly();
 
 private:
+	bool distanceReached;
 	float initialArmLength;
 	float fastBoostForceCounter = 0;
 	FTimerHandle boostTimerHadle;

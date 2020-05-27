@@ -43,12 +43,17 @@ void AMyPlayerFly::BeginPlay()
 
 void AMyPlayerFly::Tick(float DeltaTime)
 {
-	if (isAlive) {
-		distance += DeltaTime * velocity / 100;
-
-		if (distance == CurrentGameMode->DistanceToReach)
+	if (isAlive)
+	{
+		if (!distanceReached)
 		{
-			CurrentGameMode->LevelComplete();
+			distance += DeltaTime * velocity / 100;
+
+			if (distance >= CurrentGameMode->DistanceToReach)
+			{
+				distanceReached = true;
+				CurrentGameMode->LevelComplete();
+			}
 		}
 	}
 	else
@@ -116,7 +121,7 @@ void AMyPlayerFly::OnOverlap(AActor* OverlappedActor, AActor* OtherActor)
 		}
 		else if (projectile->ProjectileType == ECustom::Type::Hostile)
 		{
-			Damage(projectile->HealthAndDamage);			
+			Damage(projectile->HealthAndDamage);
 		}
 	}
 }

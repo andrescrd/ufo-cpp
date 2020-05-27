@@ -40,7 +40,7 @@ AMyPlayer::AMyPlayer() : APlayerBase()
 	SpringArm->AttachTo(RootComponent);
 	SpringArm->TargetArmLength = 1000.0f;
 	SpringArm->bEnableCameraLag = true;
-	SpringArm->CameraLagSpeed = 2.0f;
+	SpringArm->CameraLagSpeed = 1.0f;
 
 	Camera->AttachTo(SpringArm, USpringArmComponent::SocketName);
 }
@@ -89,8 +89,8 @@ void AMyPlayer::StartFastBoost()
 void AMyPlayer::FastBoostTimer()
 {
 	hasFastBoost = true;
-	FVector BoostVelocity = GetActorRotation().Vector() * velocity * fastBoostForce * GetWorld()->GetDeltaSeconds();
-	Body->SetPhysicsLinearVelocity(BoostVelocity, true);
+	FVector BoostVelocity =GetActorRotation().Vector().GetSafeNormal() * velocity * fastBoostForce * GetWorld()->GetDeltaSeconds();
+	Body->AddImpulse(BoostVelocity, NAME_None, true);
 }
 
 void AMyPlayer::StopFastBoost()
