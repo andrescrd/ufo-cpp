@@ -20,7 +20,6 @@ UDirectionalGravity::UDirectionalGravity()
 	// ...
 }
 
-
 // Called when the game starts
 void UDirectionalGravity::BeginPlay()
 {
@@ -39,7 +38,6 @@ void UDirectionalGravity::BeginPlay()
 		actor = Actors[0];
 }
 
-
 // Called every frame
 void UDirectionalGravity::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
@@ -51,6 +49,6 @@ void UDirectionalGravity::TickComponent(float DeltaTime, ELevelTick TickType, FA
 	FMatrix matrix = FRotationMatrix::MakeFromZX(lookAtVector, GetOwner()->GetActorForwardVector());
 	GetOwner()->SetActorRotation(matrix.Rotator());
 
-	//mesh->SetPhysicsLinearVelocity(lookAtVector * -1, true);
+	mesh->SetPhysicsLinearVelocity(lookAtVector * -1 * gravity, true);
 }
 

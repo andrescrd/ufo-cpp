@@ -1,5 +1,5 @@
 #include "MyProjectile.h"
-
+#include "ufo/Components/DirectionalGravity.h"
 
 AMyProjectile::AMyProjectile()
 {
@@ -8,40 +8,20 @@ AMyProjectile::AMyProjectile()
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	RootComponent = Mesh;
 
-	Dimensions = FVector(300, 0, 0);
-	AxisVector = FVector(0, 0, 1);
+	DirectionalGravity = CreateDefaultSubobject<UDirectionalGravity>(TEXT("Directional Gravity"));
+	DirectionalGravity->gravity = 0.0f;
+	AddOwnedComponent(DirectionalGravity);
+
 	Multiplier = 50.f;
-	PointOfRotation = FVector(0,0,0);
 }
 
 void AMyProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	initialLocation = GetActorLocation();
 }
 
 void AMyProjectile::Tick(float DeltaTime)
 {
-	FVector NewLocation = PointOfRotation;
-	// rotate around player
-	// FVector NewLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
-
-	AngleAxis += DeltaTime * Multiplier;
-
-	if (AngleAxis >= 360.0f)
-	{
-		AngleAxis = 0;
-	}
-
-	FVector RotateValue = initialLocation.RotateAngleAxis(AngleAxis, AxisVector);
-
-	NewLocation.X += RotateValue.X;
-	NewLocation.Y += RotateValue.Y;
-	NewLocation.Z += RotateValue.Z;
-
-	FRotator NewRotation = FRotator(0, AngleAxis, 0);
-	FQuat QuatRotation = FQuat(NewRotation);
-
-	SetActorLocationAndRotation(NewLocation, QuatRotation, false, 0, ETeleportType::None);
+	AddActorLocalOffset(Direction * Multiplier);
 }
 
