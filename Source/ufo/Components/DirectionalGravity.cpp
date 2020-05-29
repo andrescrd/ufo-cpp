@@ -43,12 +43,19 @@ void UDirectionalGravity::TickComponent(float DeltaTime, ELevelTick TickType, FA
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	FRotator rotator = (UKismetMathLibrary::FindLookAtRotation(actor->GetActorLocation(), GetOwner()->GetActorLocation()));
-	FVector lookAtVector = rotator.Vector();
+	if (actor && mesh)
+	{
+		FRotator rotator = (UKismetMathLibrary::FindLookAtRotation(actor->GetActorLocation(), GetOwner()->GetActorLocation()));
+		FVector lookAtVector = rotator.Vector();
 
-	FMatrix matrix = FRotationMatrix::MakeFromZX(lookAtVector, GetOwner()->GetActorForwardVector());
-	GetOwner()->SetActorRotation(matrix.Rotator());
+		FMatrix matrix = FRotationMatrix::MakeFromZX(lookAtVector, GetOwner()->GetActorForwardVector());
+		GetOwner()->SetActorRotation(matrix.Rotator());
 
-	mesh->SetPhysicsLinearVelocity(lookAtVector * -1 * gravity, true);
+		mesh->SetPhysicsLinearVelocity(lookAtVector * -1 * gravity, true);
+	}	
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Could not load actor or mesh ar Directional Gravity Component"));
+	}
 }
 

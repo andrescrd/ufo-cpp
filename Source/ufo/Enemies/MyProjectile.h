@@ -32,7 +32,7 @@ public:
 
 
 	// declare our float variables
-	UPROPERTY(VisibleAnywhere, Category = Movement)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement)
 		class UStaticMeshComponent* Mesh;
 	UPROPERTY(VisibleAnywhere, Category = Movement)
 		class UDirectionalGravity* DirectionalGravity;

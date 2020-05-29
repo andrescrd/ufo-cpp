@@ -37,7 +37,7 @@ void AufoGameModeBase::CheckLevel()
 	FString CurrentLevelName = CleanLevelString(GetWorld());
 	GameInstance->Levels.Find(CurrentLevelName, CurrentLevelIndex);
 
-	if (CurrentLevelIndex < GameInstance->Levels.Num() - 1)
+	if (CurrentLevelIndex < GameInstance->Levels.Num())
 	{
 		NextLevel = GameInstance->Levels[CurrentLevelIndex + 1];
 	}
